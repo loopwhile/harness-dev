@@ -1,0 +1,41 @@
+# .codex/config.toml
+#
+# 이 파일은 프로젝트 로컬 Codex 설정이다.
+# 사용자 계정, 인증, 개인 환경 설정은 ~/.codex/config.toml에 둔다.
+#
+# model 값은 실제 Codex CLI에서 지원하는 모델명으로 조정한다.
+# 예: gpt-5.5, gpt-5.4, gpt-5.4-mini 등
+
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[features]
+hooks = true
+
+[agents]
+max_threads = 5
+max_depth = 1
+job_max_runtime_seconds = 1800
+
+[agents.orchestrator]
+config_file = "agents/orchestrator.toml"
+description = "하나의 TASK 파일을 기준으로 구현, 검증, 리뷰, 기록, 최종 커밋을 조율한다."
+
+[agents.implementer]
+config_file = "agents/implementer.toml"
+description = "TASK 허용 범위 안에서 최소 구현을 수행한다."
+
+[agents.verifier]
+config_file = "agents/verifier.toml"
+description = "테스트, 린트, 빌드, acceptance criteria를 검증한다."
+
+[agents.reviewer]
+config_file = "agents/reviewer.toml"
+description = "diff를 검토하고 정확성, 위험, 범위 준수를 확인한다."
+
+[agents.recorder]
+config_file = "agents/recorder.toml"
+description = "TASK 실행 로그, 검증 증거, 리뷰 결과, 상태 기록을 작성한다."
