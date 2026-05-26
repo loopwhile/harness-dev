@@ -1,0 +1,15 @@
+{
+    "name": "probe",
+    "description": "Antigravity workspace agent loading test.",
+    "hidden": false,
+    "config": {
+        "customAgent": {
+            "systemPromptSections": [
+                {
+                    "title": "Agent System Instructions",
+                    "content": "You are a probe agent. If this agent appears in /agents, workspace agent loading works."
+                }
+            ]
+        }
+    }
+}

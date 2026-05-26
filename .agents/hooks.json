@@ -1,0 +1,25 @@
+{
+    "destructive-command-guard": {
+        "PreToolUse": [
+            {
+                "matcher": "run_command",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "python3 .agents/hooks/pre_tool_use_policy.py",
+                        "timeout": 10
+                    }
+                ]
+            }
+        ]
+    },
+    "task-stop-guard": {
+        "Stop": [
+            {
+                "type": "command",
+                "command": "python3 .agents/hooks/stop_task_guard.py",
+                "timeout": 10
+            }
+        ]
+    }
+}

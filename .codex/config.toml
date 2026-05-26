@@ -11,6 +11,7 @@ model_reasoning_effort = "high"
 
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
+allow_login_shell = false
 
 [features]
 hooks = true
@@ -19,6 +20,9 @@ hooks = true
 max_threads = 5
 max_depth = 1
 job_max_runtime_seconds = 1800
+
+[sandbox_workspace_write]
+network_access = false
 
 [agents.orchestrator]
 config_file = "agents/orchestrator.toml"

@@ -91,7 +91,7 @@ TASK는 다음 조건을 모두 만족해야 완료로 본다.
 | `.agents/skills/` | 공통 에이전트 스킬 원본 |
 | `.codex/agents/` | Codex 전용 custom subagent 정의 |
 | `.codex/hooks/` | Codex lifecycle hook 스크립트 |
-| `.codex/rules/` | Codex 작업 규칙 문서 |
+| `.codex/rules/` | 사람이 읽는 Codex 작업 정책 문서. 실행 정책은 별도 Codex Rules 또는 Hooks로 관리 |
 | `docs/` | 프로젝트 상위 문서 |
 | `docs/09_pm/wbs/` | WBS 문서 |
 | `ops/tasks/` | 실행 가능한 TASK 파일 |
@@ -119,3 +119,44 @@ TASK는 다음 조건을 모두 만족해야 완료로 본다.
 - 검증 없는 완료 처리 금지
 - 실패한 작업 커밋 금지
 - 여러 TASK를 하나의 커밋에 섞기 금지
+
+## 삭제 및 파괴성 작업 승인 규칙
+
+에이전트는 TASK 범위 안에서 일반적인 읽기, 수정, 생성, 테스트, 빌드, 검증, 기록, 커밋은 자율적으로 진행할 수 있다.
+
+다만 아래 작업은 반드시 사용자에게 먼저 확인해야 한다.
+
+- 파일 삭제
+- 디렉터리 삭제
+- `rm`
+- `rm -r`
+- `rm -rf`
+- `rmdir`
+- `unlink`
+- `git rm`
+- `git clean`
+- `git reset --hard`
+- force push
+- migration rollback
+- 데이터베이스 삭제
+- 테이블 삭제
+- 대량 파일 이동
+- 대량 파일명 변경
+- TASK allowed files 밖의 변경
+- TASK 범위를 넘어서는 구조 변경
+
+삭제가 필요한 경우 에이전트는 다음 형식으로 사용자에게 질문한다.
+
+```text
+삭제 승인이 필요합니다.
+
+대상:
+- path/to/file
+
+이유:
+- 삭제가 필요한 이유
+
+진행해도 될까요?
+```
+
+사용자 승인이 없으면 삭제 또는 파괴성 작업을 진행하지 않는다.
