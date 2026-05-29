@@ -59,9 +59,40 @@ ops/tasks/TASK-xxx.md
 
 ## 4. Antigravity 런타임 subagent 운영 방식
 
-현재 Antigravity CLI 작업에서는 정적 `.agents/agents/*/agent.json` 파일에 의존하지 않는다.
+Antigravity CLI는 `.agents/agents/*/agent.json` 파일을 서브에이전트 정의의 진실 공급원으로 사용한다.
 
-메인 agent는 TASK 실행 중 필요한 역할의 runtime subagent를 동적으로 정의하고 호출한다.
+메인 에이전트(orchestrator)는 TASK 실행 중 다음 절차로 runtime subagent를 정의하고 호출한다.
+
+1. `.agents/agents/<role>/agent.json` 파일을 읽는다. (대상: implementer, verifier, reviewer, recorder)
+2. `config.customAgent.systemPromptSections[0].content` 값을 시스템 프롬프트로 추출한다.
+3. `config.customAgent.toolNames` 배열을 확인하여 도구 권한을 결정한다.
+   - `write_to_file`, `replace_file_content`, `multi_replace_file_content` 중 하나라도 포함되면 `enable_write_tools = true`
+   - 포함되지 않으면 `enable_write_tools = false`
+4. `define_subagent`를 호출하여 런타임 서브에이전트를 등록한다.
+5. `invoke_subagent`로 해당 서브에이전트를 실행한다.
+
+agent.json 파일이 없는 역할은 SKILL.md에 정의된 기본 역할 정의를 사용한다.
+
+### 도구 권한 매핑
+
+agent.json의 `toolNames`를 `define_subagent` 파라미터로 매핑한다.
+
+| agent.json toolNames 포함 여부 | define_subagent 파라미터 |
+|:---|:---|
+| `write_to_file` 또는 `replace_file_content` 포함 | `enable_write_tools = true` |
+| 위 도구 미포함 | `enable_write_tools = false` |
+| `search_web` 또는 `read_url_content` 포함 | 시스템 프롬프트에 웹 조사 허용 명시 |
+| MCP 도구 참조 | `enable_mcp_tools = true` |
+| `invoke_subagent` 또는 `define_subagent` 포함 | `enable_subagent_tools = true` |
+
+### 기본 역할별 도구 권한 (현재 agent.json 기준)
+
+| 역할 | write_tools | mcp_tools | subagent_tools |
+|:---|:---|:---|:---|
+| implementer | ✅ true | false | false |
+| verifier | ❌ false | false | false |
+| reviewer | ❌ false | false | false |
+| recorder | ✅ true | false | false |
 
 권장 runtime subagent 역할은 다음과 같다.
 
@@ -332,7 +363,9 @@ ops/logs/TASK-xxx.log.md
 4. implementation requirements를 작업 단위로 나눈다.
 5. acceptance criteria를 검증 가능한 체크리스트로 변환한다.
 6. verification commands를 확인한다.
-7. 필요한 runtime subagent 역할을 정한다.
+7. 필요한 runtime subagent 역할(implementer, verifier, reviewer, recorder)을 정한다.
+8. 각 역할의 `.agents/agents/<role>/agent.json`을 읽어 시스템 프롬프트와 도구 권한을 확인한다.
+9. `define_subagent`로 각 역할의 런타임 서브에이전트를 등록한다.
 
 ### 7.3 구현
 

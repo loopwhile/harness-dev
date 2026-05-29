@@ -8,16 +8,17 @@ trigger: always_on
 
 이 규칙은 Antigravity CLI에서 TASK 실행 중 runtime subagent를 사용할 때의 역할, 책임, 출력 형식을 정의한다.
 
-현재 Antigravity 작업에서는 정적 `.agents/agents/*/agent.json` 파일에 의존하지 않는다.
+Antigravity 작업에서 `.agents/agents/*/agent.json` 파일은 런타임 서브에이전트의 시스템 프롬프트와 도구 권한 정의의 진실 공급원이다. (probe 제외)
 
-`.agents/agents/**`는 실험 또는 보류 영역으로 취급한다.
+메인 에이전트(orchestrator)는 `define_subagent` 호출 시 해당 agent.json의 설정을 읽어서 주입한다.
 
 신뢰 가능한 실행 경로는 다음이다.
 
 ```text
-.agents/skills/antigravity-execute-task/SKILL.md
-.agents/rules/**
-runtime subagent orchestration
+.agents/skills/antigravity-execute-task/SKILL.md   ← 실행 절차
+.agents/agents/*/agent.json                        ← 서브에이전트 정의
+.agents/rules/**                                   ← 행동 규칙
+runtime subagent orchestration                     ← 실행 엔진
 ```
 
 ## 기본 원칙
