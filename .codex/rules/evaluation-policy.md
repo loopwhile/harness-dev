@@ -52,10 +52,11 @@ evaluator는 품질 평가자다.
 ## 사용자 검증 상태
 
 ```text
-PENDING_USER_VALIDATION
-APPROVED
-REJECTED
-DEFERRED
+PENDING_USER_VALIDATION: 사용자 검증 대기 중
+APPROVED: 검증 통과. 다음 기능 그룹 진행 가능.
+REJECTED: 검증 실패. 수정 후 재평가 필요.
+REQUEST_CHANGES: 부분 수정 필요. 지적된 항목만 수정 후 재검증.
+DEFERRED: 보류. 후속 조치 결정 후 진행.
 ```
 
 사용자 APPROVED 전까지 다음 기능 그룹으로 진행하지 않는다.
