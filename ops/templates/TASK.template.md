@@ -8,7 +8,7 @@
 | WBS ID | WBS-XX-XXX |
 | Status | TODO |
 | Priority | P1 |
-| Type | feature / fix / refactor / docs / test / infra |
+| Type | feature / fix / refactor / docs / test / infra / eval |
 | Owner |  |
 | Created At | YYYY-MM-DD |
 | Updated At | YYYY-MM-DD |
@@ -133,3 +133,33 @@ TASK를 진행할 수 없는 경우 여기에 사유를 기록한다.
 에이전트가 실행 중 필요한 짧은 메모를 남길 수 있다.
 
 - 
+
+## 14. Evaluation Scope (EVAL TASK 전용)
+
+EVAL TASK에서만 작성한다. 일반 TASK에서는 이 섹션을 비워둔다.
+
+| Field | Value |
+|---|---|
+| Evaluation Type | feature_eval / domain_eval / epic_eval |
+| Target Domain |  |
+| Target Feature |  |
+| Evaluated TASKs |  |
+| Related WBS Items |  |
+| Integration Scope |  |
+
+## 15. User Validation Guide (EVAL TASK 전용)
+
+EVAL TASK에서만 작성한다. 일반 TASK에서는 이 섹션을 비워둔다.
+
+사용자가 직접 기능을 검증할 수 있는 시나리오를 기술한다.
+
+- [ ] 
+- [ ] 
+
+사용자 판정 기준:
+
+| 선택 | 의미 |
+|---|---|
+| APPROVED | 검증 통과. 다음 기능 그룹으로 진행. |
+| REJECTED | 검증 실패. 수정 후 재평가 필요. |
+| DEFERRED | 보류. 후속 조치 결정 후 진행. |

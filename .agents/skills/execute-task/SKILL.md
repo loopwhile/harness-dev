@@ -103,6 +103,24 @@ description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사�
 13. 검증과 리뷰가 통과하면 커밋한다.
 14. 최종 결과를 보고한다.
 
+EVAL TASK의 경우 다음 경로를 따른다.
+
+1. EVAL TASK의 Evaluation Scope를 확인한다.
+2. 선행 TASK 로그(`ops/logs/TASK-xxx.log.md`)를 읽는다.
+3. 통합 검증이 필요하면 verification commands를 실행한다.
+4. 평가표 기반 평가를 수행한다.
+5. 사용자 검증 안내를 생성한다.
+6. `ops/logs/TASK-xxx.log.md`에 평가 결과와 사용자 검증 안내를 기록한다.
+7. EVAL TASK를 커밋한다. (상태: PENDING_USER_VALIDATION)
+8. 사용자 검증 안내를 출력하고 STOP한다.
+9. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.
+
+EVAL TASK에서 평가가 FAIL 또는 BLOCKED이면:
+
+- 사용자에게 보고하고 중단한다.
+- 자동으로 이전 TASK를 재실행하지 않는다.
+- 필요하면 correction TASK를 새로 만들거나 사용자 승인 후 진행한다.
+
 ## 6. 커밋 규칙
 
 커밋 메시지는 TASK 파일의 commit rule을 따른다.
@@ -132,3 +150,5 @@ TASK-001 WBS-01-001: implement reservation creation API
 - 커밋 메시지
 - 커밋 해시
 - 남은 위험 또는 후속 작업
+- Evaluation verdict (EVAL TASK만)
+- User validation status (EVAL TASK만)

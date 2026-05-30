@@ -12,6 +12,7 @@
 4. 작업은 오케스트레이션 에이전트가 관리한다.
 5. 구현, 검증, 리뷰, 기록은 각각 분리된 에이전트 또는 스킬이 담당한다.
 6. 모든 완료 작업은 TASK 번호와 WBS 번호가 포함된 커밋으로 닫는다.
+7. 기능 완료 시점에 EVAL TASK로 품질 평가와 사용자 검증 게이트를 운영한다.
 
 ## 2. 진실 공급원
 
@@ -40,6 +41,17 @@
 5. 리뷰 에이전트가 diff, 범위 이탈, 위험 요소를 검토한다.
 6. 기록 에이전트가 `ops/logs/`에 실행 기록을 남긴다.
 7. 오케스트레이션 에이전트가 최종 커밋을 생성한다.
+
+EVAL TASK의 경우 다음 순서로 진행한다.
+
+1. 오케스트레이션 에이전트가 EVAL TASK를 읽는다.
+2. 통합 검증을 수행한다.
+3. 평가 에이전트가 평가표 기반 평가를 수행한다.
+4. 평가 에이전트가 사용자 검증 안내를 생성한다.
+5. 기록 에이전트가 평가 결과와 사용자 검증 안내를 기록한다.
+6. EVAL TASK를 커밋한다.
+7. 사용자 검증 안내를 출력하고 중단한다.
+8. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.
 
 ## 4. 작업 경계 규칙
 
@@ -96,7 +108,9 @@ TASK는 다음 조건을 모두 만족해야 완료로 본다.
 | `docs/09_pm/wbs/` | WBS 문서 |
 | `ops/tasks/` | 실행 가능한 TASK 파일 |
 | `ops/logs/` | TASK 실행 기록 |
-| `ops/templates/` | TASK, queue, log 템플릿 |
+| `ops/templates/` | TASK, queue, log, 평가표, 사용자 검증, WBS 분해 템플릿 |
+| `.agents/agents/evaluator/` | Antigravity evaluator 에이전트 정의 |
+| `.codex/agents/evaluator.toml` | Codex evaluator 에이전트 정의 |
 
 ## 8. 기본 에이전트 행동
 
@@ -160,3 +174,35 @@ TASK는 다음 조건을 모두 만족해야 완료로 본다.
 ```
 
 사용자 승인이 없으면 삭제 또는 파괴성 작업을 진행하지 않는다.
+
+## Evaluation and User Validation Policy
+
+Full evaluation and user validation are not required for every TASK.
+
+Each normal TASK must still pass:
+
+- implementation boundary check
+- verification
+- review
+- execution logging
+- commit rule
+
+Full evaluation is required at feature completion checkpoints.
+
+Feature completion checkpoints are represented as explicit EVAL TASKs.
+
+Examples:
+
+- TASK-026 EVAL: 회원가입 기능 평가 및 사용자 검증 안내
+- TASK-032 EVAL: 로그인 기능 평가 및 사용자 검증 안내
+- TASK-099 EVAL: 회원 도메인 전체 통합 평가 및 사용자 검증 안내
+
+User validation is required only after a feature-level or WBS-level EVAL TASK.
+
+The agent must not continue to the next feature group until user validation is APPROVED.
+
+EVAL TASK는 평가 완료 시점에 평가 로그와 사용자 검증 안내를 커밋한다.
+
+커밋하되 TASK 상태를 `PENDING_USER_VALIDATION`으로 남긴다.
+
+사용자가 APPROVED를 명시하기 전까지 다음 feature group 또는 WBS group으로 진행하지 않는다.

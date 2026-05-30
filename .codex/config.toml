@@ -43,3 +43,7 @@ description = "diff를 검토하고 정확성, 위험, 범위 준수를 확인�
 [agents.recorder]
 config_file = "agents/recorder.toml"
 description = "TASK 실행 로그, 검증 증거, 리뷰 결과, 상태 기록을 작성한다."
+
+[agents.evaluator]
+config_file = "agents/evaluator.toml"
+description = "기능 단위 평가표 기반 품질 평가와 사용자 검증 안내를 수행한다."

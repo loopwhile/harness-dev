@@ -63,7 +63,7 @@ Antigravity CLI는 `.agents/agents/*/agent.json` 파일을 서브에이전트 �
 
 메인 에이전트(orchestrator)는 TASK 실행 중 다음 절차로 runtime subagent를 정의하고 호출한다.
 
-1. `.agents/agents/<role>/agent.json` 파일을 읽는다. (대상: implementer, verifier, reviewer, recorder)
+1. `.agents/agents/<role>/agent.json` 파일을 읽는다. (대상: implementer, verifier, reviewer, evaluator, recorder)
 2. `config.customAgent.systemPromptSections[0].content` 값을 시스템 프롬프트로 추출한다.
 3. `config.customAgent.toolNames` 배열을 확인하여 도구 권한을 결정한다.
    - `write_to_file`, `replace_file_content`, `multi_replace_file_content` 중 하나라도 포함되면 `enable_write_tools = true`
@@ -92,6 +92,7 @@ agent.json의 `toolNames`를 `define_subagent` 파라미터로 매핑한다.
 | implementer | ✅ true | false | false |
 | verifier | ❌ false | false | false |
 | reviewer | ❌ false | false | false |
+| evaluator | ❌ false | false | false |
 | recorder | ✅ true | false | false |
 
 권장 runtime subagent 역할은 다음과 같다.
@@ -101,6 +102,7 @@ orchestrator
 implementer
 verifier
 reviewer
+evaluator
 recorder
 ```
 
@@ -111,6 +113,7 @@ recorder
 - 구현 책임
 - 검증 책임
 - 리뷰 책임
+- 평가 책임 (EVAL TASK)
 - 기록 책임
 - 최종 완료 판단 책임
 
@@ -319,6 +322,41 @@ ops/logs/TASK-xxx.log.md
 - TASK 범위 밖 문서 수정
 - 커밋
 
+### 5.6 evaluator
+
+#### 역할
+
+evaluator는 EVAL TASK에서 기능 또는 도메인 단위의 구현 품질을 평가한다.
+
+반드시 다음을 수행한다.
+
+- 선행 TASK 로그를 읽어 구현, 검증, 리뷰 결과를 확인한다.
+- 평가표 템플릿(ops/templates/feature-evaluation.template.md)에 맞춰 8개 영역을 평가한다.
+- 각 영역에 등급(EXCELLENT/GOOD/ACCEPTABLE/NEEDS_IMPROVEMENT/FAIL)을 부여한다.
+- 최종 verdict(PASS/CONDITIONAL_PASS/FAIL/BLOCKED)를 결정한다.
+- 사용자 검증 안내(ops/templates/user-validation.template.md)를 생성한다.
+
+#### Evaluation Type
+
+| Type | 범위 |
+|:---|:---|
+| feature_eval | 단일 기능 내 TASK들만 평가 |
+| domain_eval | 도메인 내 모든 기능과 기능 간 통합 평가 |
+| epic_eval | 여러 도메인에 걸친 대규모 통합 평가 |
+
+domain_eval 또는 epic_eval에서는 통합 관점 항목을 추가로 확인한다.
+
+#### 금지
+
+- 구현 파일 수정
+- 리팩터링
+- 테스트 수정
+- 커밋
+- 삭제/파괴성 작업
+- TASK 범위 확장
+- 평가 증거 조작
+- FAIL 시 자동 재실행
+
 ## 6. 사용자 승인이 필요한 작업
 
 다음 작업은 반드시 사용자에게 먼저 확인한다.
@@ -397,7 +435,29 @@ ops/logs/TASK-xxx.log.md
 2. 구현, 검증, 리뷰 결과를 기록한다.
 3. 남은 위험과 후속 작업을 기록한다.
 
-### 7.7 커밋
+### 7.7 EVAL TASK 분기 (EVAL TASK 전용)
+
+TASK Type이 `eval`인 경우 일반 TASK 흐름(7.3~7.6) 대신 다음 경로를 따른다.
+
+1. EVAL TASK의 Evaluation Scope를 확인한다.
+2. 선행 TASK 로그(`ops/logs/TASK-xxx.log.md`)를 읽는다.
+3. 통합 검증이 필요하면 verification commands를 실행한다.
+4. evaluator 역할로 평가표 기반 평가를 수행한다.
+5. evaluator가 사용자 검증 안내를 생성한다.
+6. recorder 역할로 평가 결과와 사용자 검증 안내를 `ops/logs/TASK-xxx.log.md`에 기록한다.
+7. EVAL TASK를 커밋한다. (상태: PENDING_USER_VALIDATION)
+8. 사용자 검증 안내를 출력한다.
+9. STOP한다.
+10. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.
+
+EVAL TASK에서 evaluator가 FAIL 또는 BLOCKED를 반환하면:
+
+1. 평가 결과를 기록한다.
+2. 사용자에게 보고하고 중단한다.
+3. 자동으로 이전 TASK를 재실행하지 않는다.
+4. 필요하면 correction TASK를 새로 만들거나 사용자가 재작업 방향을 승인한 뒤 진행한다.
+
+### 7.8 커밋
 
 검증과 리뷰가 통과한 경우에만 커밋한다.
 
@@ -448,6 +508,8 @@ Status:
 Changed files:
 Verification:
 Review verdict:
+Evaluation verdict: (EVAL TASK만)
+User validation status: (EVAL TASK만)
 Execution log:
 Commit message:
 Commit hash:

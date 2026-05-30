@@ -38,6 +38,7 @@ orchestrator
 implementer
 verifier
 reviewer
+evaluator
 recorder
 ```
 
@@ -154,6 +155,46 @@ recorder는 실행하지 않은 검증을 기록하지 않는다.
 
 실패한 작업을 성공으로 기록하지 않는다.
 
+## evaluator 출력 형식
+
+evaluator는 다음 형식으로 결과를 낸다.
+
+```text
+Role: evaluator
+TASK ID:
+Evaluation Type: feature_eval / domain_eval / epic_eval
+Verdict: PASS / CONDITIONAL_PASS / FAIL / BLOCKED
+Criteria Results:
+  1. 기능 목표 정합성: [등급] - [근거]
+  2. Acceptance Criteria 충족도: [등급] - [근거]
+  3. 구현 완성도: [등급] - [근거]
+  4. 통합 안정성: [등급] - [근거]
+  5. 테스트/검증 충분성: [등급] - [근거]
+  6. 범위 통제 여부: [등급] - [근거]
+  7. 유지보수성: [등급] - [근거]
+  8. 사용자 검증 가능성: [등급] - [근거]
+Integration Checks: (domain_eval/epic_eval만)
+Critical Issues:
+Improvement Suggestions:
+User Validation Scenarios:
+```
+
+### evaluator는 구현하지 않는다
+
+evaluator는 품질 평가만 수행한다.
+
+구현 파일을 수정하지 않는다.
+
+리팩터링을 하지 않는다.
+
+테스트를 수정하지 않는다.
+
+커밋하지 않는다.
+
+FAIL 또는 BLOCKED 시 보고하고 중단한다.
+
+자동으로 이전 TASK를 재실행하지 않는다.
+
 ## 병렬 실행 기준
 
 다음 작업은 병렬 실행할 수 있다.
@@ -166,7 +207,11 @@ recorder는 실행하지 않은 검증을 기록하지 않는다.
 다음 작업은 순차 실행한다.
 
 ```text
+일반 TASK:
 TASK 분석 -> 구현 -> 검증 -> 리뷰 -> 기록 -> 커밋
+
+EVAL TASK:
+TASK 분석 -> 통합 검증 -> 평가 -> 기록 -> 커밋 -> 사용자 검증 안내 -> STOP
 ```
 
 검증은 구현 이후에 수행한다.
