@@ -401,7 +401,9 @@ domain_eval 또는 epic_eval에서는 통합 관점 항목을 추가로 확인�
 4. implementation requirements를 작업 단위로 나눈다.
 5. acceptance criteria를 검증 가능한 체크리스트로 변환한다.
 6. verification commands를 확인한다.
-7. 필요한 runtime subagent 역할(implementer, verifier, reviewer, recorder)을 정한다.
+7. 필요한 runtime subagent 역할을 정한다.
+   - 일반 TASK: implementer, verifier, reviewer, recorder
+   - EVAL TASK: verifier(통합 검증), evaluator, recorder
 8. 각 역할의 `.agents/agents/<role>/agent.json`을 읽어 시스템 프롬프트와 도구 권한을 확인한다.
 9. `define_subagent`로 각 역할의 런타임 서브에이전트를 등록한다.
 

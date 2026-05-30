@@ -120,7 +120,7 @@ EVAL TASK에서만 작성한다. 일반 TASK에서는 이 섹션을 비워둔다
 
 | Field | Value |
 |---|---|
-| Validation Status | PENDING_USER_VALIDATION / APPROVED / REJECTED / DEFERRED |
+| Validation Status | PENDING_USER_VALIDATION / APPROVED / REJECTED / REQUEST_CHANGES / DEFERRED |
 | Decided At |  |
 | Decision Reason |  |
 

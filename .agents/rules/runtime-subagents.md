@@ -224,6 +224,8 @@ TASK 분석 -> 통합 검증 -> 평가 -> 기록 -> 커밋 -> 사용자 검증 �
 
 ## 최종 완료 판단
 
+### 일반 TASK 완료 조건
+
 runtime subagent 결과가 모두 나와도 다음 조건을 만족하지 않으면 완료가 아니다.
 
 - implementation 완료
@@ -233,6 +235,23 @@ runtime subagent 결과가 모두 나와도 다음 조건을 만족하지 않으
 - forbidden files 수정 없음
 - 관련 없는 변경 없음
 - 커밋 조건 충족
+
+### EVAL TASK 완료 조건
+
+EVAL TASK는 일반 TASK와 다른 완료 조건을 따른다.
+
+- Evaluation Scope 확인 완료
+- 선행 TASK 로그 확인 완료
+- 통합 검증 결과 확인 완료 (orchestrator 또는 verifier가 수행)
+- evaluator verdict 산출 완료 (PASS / CONDITIONAL_PASS / FAIL / BLOCKED)
+- 평가 결과 `ops/logs/TASK-xxx.log.md`에 기록 완료
+- 사용자 검증 안내 기록 완료
+- EVAL TASK 커밋 완료
+- TASK 상태를 `PENDING_USER_VALIDATION`으로 설정
+- 사용자 검증 안내 출력 완료
+- 다음 기능 그룹 진행 중단 (STOP)
+
+EVAL TASK는 사용자가 APPROVED를 명시하기 전까지 다음 feature group 또는 WBS group으로 진행하지 않는다.
 
 ## 실패 시 처리
 

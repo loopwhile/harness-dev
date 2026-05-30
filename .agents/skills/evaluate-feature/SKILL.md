@@ -9,7 +9,11 @@ description: EVAL TASK에서 기능 또는 도메인 단위의 품질 평가를 
 
 이 스킬은 EVAL TASK에서 기능 또는 도메인 단위의 구현 품질을 평가한다.
 
-evaluator는 구현자가 아니다. 품질 평가자다.
+evaluator는 구현자가 아니다. read-only 품질 평가자다.
+
+evaluator는 직접 구현하거나, 테스트를 수정하거나, verification commands를 실행하지 않는다.
+
+통합 검증은 orchestrator 또는 verifier가 수행한다. evaluator는 그 검증 결과와 선행 TASK 로그를 읽어 평가한다.
 
 평가 결과를 기록하고 사용자 검증 안내를 생성한 후 중단한다.
 
@@ -19,6 +23,7 @@ evaluator는 구현자가 아니다. 품질 평가자다.
 
 - EVAL TASK 파일
 - 선행 TASK 목록과 실행 로그
+- 통합 검증 결과 (orchestrator 또는 verifier가 수행한 결과)
 - 관련 WBS 항목
 - 관련 문서 및 계약
 
@@ -94,8 +99,8 @@ domain_eval 또는 epic_eval에서는 추가로 통합 관점 항목을 확인�
    - 관련 WBS 항목
 4. 선행 TASK 로그를 읽는다.
    - `ops/logs/TASK-xxx.log.md` 파일들
-5. 필요한 소스 코드, 테스트, 계약 문서를 읽는다.
-6. 통합 검증이 필요하면 verification commands를 실행한다.
+5. 통합 검증 결과를 확인한다. (통합 검증은 evaluator 전에 orchestrator 또는 verifier가 수행한 결과를 읽는다.)
+6. 필요한 소스 코드, 테스트, 계약 문서를 읽는다. (읽기 전용)
 7. 8개 평가 영역에 대해 등급과 근거를 작성한다.
 8. domain_eval 또는 epic_eval이면 통합 체크 항목을 추가로 확인한다.
 9. 최종 verdict를 결정한다.
@@ -147,5 +152,6 @@ User Validation Scenarios:
 - TASK 범위를 확장하지 않는다.
 - 평가 증거를 조작하지 않는다.
 - 실행하지 않은 검증을 평가에 반영하지 않는다.
+- verification commands를 직접 실행하지 않는다. 통합 검증은 orchestrator 또는 verifier가 수행한다.
 - FAIL verdict일 때 사용자에게 보고하고 중단한다.
 - 자동으로 이전 TASK를 재실행하지 않는다.
