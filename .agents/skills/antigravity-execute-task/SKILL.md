@@ -443,7 +443,7 @@ TASK Type이 `eval`인 경우 일반 TASK 흐름(7.3~7.6) 대신 다음 경로�
 
 1. EVAL TASK의 Evaluation Scope를 확인한다.
 2. 선행 TASK 로그(`ops/logs/TASK-xxx.log.md`)를 읽는다.
-3. 통합 검증이 필요하면 verification commands를 실행한다.
+3. 통합 검증이 필요하면 verifier 역할로 verification commands를 실행한다.
 4. evaluator 역할로 평가표 기반 평가를 수행한다.
 5. evaluator가 사용자 검증 안내를 생성한다.
 6. recorder 역할로 평가 결과와 사용자 검증 안내를 `ops/logs/TASK-xxx.log.md`에 기록한다.
