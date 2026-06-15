@@ -6,6 +6,8 @@
 |---|---|
 | EVAL TASK ID | TASK-XXX |
 | WBS ID | WBS-XX-XXX |
+| Domain |  |
+| Branch |  |
 | Feature Name |  |
 | Validation Status | PENDING_USER_VALIDATION |
 | Created At | YYYY-MM-DD HH:mm |

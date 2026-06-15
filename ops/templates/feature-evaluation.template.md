@@ -6,6 +6,8 @@
 |---|---|
 | EVAL TASK ID | TASK-XXX |
 | WBS ID | WBS-XX-XXX |
+| Domain |  |
+| Branch |  |
 | Evaluation Type | feature_eval / domain_eval / epic_eval |
 | Evaluated At | YYYY-MM-DD HH:mm |
 | Evaluator | evaluator agent |

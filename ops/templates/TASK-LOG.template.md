@@ -6,6 +6,8 @@
 |---|---|
 | TASK ID | TASK-XXX |
 | WBS ID | WBS-XX-XXX |
+| Domain |  |
+| Branch |  |
 | Status | TODO |
 | Started At | YYYY-MM-DD HH:mm |
 | Completed At |  |
@@ -28,9 +30,9 @@
 
 ## 3. Files Changed
 
-| File | Change Summary |
-|---|---|
-|  |  |
+| File | Change Type | Change Summary |
+|---|---|---|
+|  | created / modified / deleted / renamed / moved |  |
 
 ## 4. Implementation Summary
 

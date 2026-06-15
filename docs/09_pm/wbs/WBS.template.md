@@ -6,11 +6,13 @@
 |---|---|
 | WBS ID | WBS-XX |
 | Domain |  |
+| Branch |  |
 | Status | TODO |
 | Priority | P1 |
 | Owner |  |
 | Created At | YYYY-MM-DD |
 | Updated At | YYYY-MM-DD |
+| Depends On |  |
 | User Validation Status |  |
 | Related Docs |  |
 | Related ADRs |  |

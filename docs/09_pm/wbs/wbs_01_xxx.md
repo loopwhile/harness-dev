@@ -6,10 +6,12 @@
 |---|---|
 | WBS ID | WBS-01 |
 | Domain |  |
+| Branch |  |
 | Status | TODO |
 | Owner |  |
 | Created At | YYYY-MM-DD |
 | Updated At | YYYY-MM-DD |
+| Depends On |  |
 | User Validation Status |  |
 
 ## 1. Objective

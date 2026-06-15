@@ -6,6 +6,8 @@
 |---|---|
 | TASK ID | TASK-XXX |
 | WBS ID | WBS-XX-XXX |
+| Domain |  |
+| Branch |  |
 | Status | TODO |
 | Priority | P1 |
 | Type | feature / fix / refactor / docs / test / infra / eval |
@@ -102,11 +104,6 @@
 검증과 리뷰 후 아래 파일을 생성 또는 갱신한다.
 
 - `ops/logs/TASK-XXX.log.md`
-
-선택 사항이며 TASK에서 명시적으로 허용한 경우에만 갱신한다.
-
-- `docs/08_ops/status/evidence_log.md`
-- `docs/08_ops/status/status_report.md`
 
 ## 11. Commit Rule
 
