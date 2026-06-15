@@ -45,7 +45,7 @@ EVAL TASK는 다음 순서로 실행한다.
 6. recorder가 평가 결과와 사용자 검증 안내를 ops/logs/TASK-xxx.log.md에 기록한다.
 7. EVAL TASK를 커밋한다. (평가 로그 + 사용자 검증 안내)
 8. 사용자 검증 안내를 출력한다.
-9. STOP한다. (상태: PENDING_USER_VALIDATION)
+9. STOP한다. (TASK Status: DONE, User Validation Status: PENDING_USER_VALIDATION)
 10. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.
 ```
 
@@ -61,7 +61,7 @@ EVAL TASK는 평가 완료 시점에 평가 로그와 사용자 검증 안내를
 
 사용자 승인 전까지 커밋을 보류하지 않는다.
 
-커밋하되 TASK 상태를 `PENDING_USER_VALIDATION`으로 남긴다.
+커밋하되 TASK Status는 `DONE`으로 둔다. User Validation Status는 `PENDING_USER_VALIDATION`으로 둔다.
 
 사용자가 APPROVED를 명시하기 전까지 다음 feature group 또는 WBS group으로 진행하지 않는다.
 

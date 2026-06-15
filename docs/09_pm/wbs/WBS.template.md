@@ -114,7 +114,7 @@ WBS-03: TASK-040 ~ TASK-059
 2. 도메인 마지막에 도메인 통합 EVAL TASK를 배치한다.
 3. EVAL TASK의 dependencies에는 해당 범위의 모든 선행 TASK를 명시한다.
 4. EVAL TASK의 Type은 반드시 `eval`로 표기한다.
-5. EVAL TASK 완료 후 상태는 `PENDING_USER_VALIDATION`으로 둔다.
+5. EVAL TASK 완료 후 TASK Status는 `DONE`으로 둔다. User Validation Status는 `PENDING_USER_VALIDATION`으로 둔다.
 6. 사용자 `APPROVED` 전까지 다음 Feature group 또는 WBS group으로 진행하지 않는다.
 
 ## 10. Dependencies

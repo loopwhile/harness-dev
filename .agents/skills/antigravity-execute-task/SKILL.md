@@ -435,7 +435,7 @@ TASK Type이 `eval`인 경우 일반 TASK 흐름(8.3~8.6) 대신 다음 경로�
 4. evaluator 역할로 평가표 기반 평가를 수행한다.
 5. evaluator가 사용자 검증 안내를 생성한다.
 6. recorder 역할로 평가 결과와 사용자 검증 안내를 `ops/logs/TASK-xxx.log.md`에 기록한다.
-7. EVAL TASK를 커밋한다. (상태: PENDING_USER_VALIDATION)
+7. EVAL TASK를 커밋한다. (TASK Status: DONE, User Validation Status: PENDING_USER_VALIDATION)
 8. 사용자 검증 안내를 출력한다.
 9. STOP한다.
 10. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.

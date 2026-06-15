@@ -296,7 +296,8 @@ EVAL TASK는 일반 TASK와 다른 완료 조건을 따른다.
 - 평가 결과 `ops/logs/TASK-xxx.log.md`에 기록 완료
 - 사용자 검증 안내 기록 완료
 - EVAL TASK 커밋 완료
-- TASK 상태를 `PENDING_USER_VALIDATION`으로 설정
+- TASK Status를 `DONE`으로 설정
+- User Validation Status를 `PENDING_USER_VALIDATION`으로 설정
 - 사용자 검증 안내 출력 완료
 - 다음 기능 그룹 진행 중단 (STOP)
 

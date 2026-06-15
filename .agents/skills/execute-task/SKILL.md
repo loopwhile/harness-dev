@@ -120,7 +120,7 @@ description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사�
 4. 평가표 기반 평가를 수행한다.
 5. 사용자 검증 안내를 생성한다.
 6. `ops/logs/TASK-xxx.log.md`에 평가 결과와 사용자 검증 안내를 기록한다.
-7. EVAL TASK를 커밋한다. (상태: PENDING_USER_VALIDATION)
+7. EVAL TASK를 커밋한다. (TASK Status: DONE, User Validation Status: PENDING_USER_VALIDATION)
 8. 사용자 검증 안내를 출력하고 STOP한다.
 9. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.
 

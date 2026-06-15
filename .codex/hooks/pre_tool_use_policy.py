@@ -18,13 +18,12 @@ from typing import Any
 
 # 프로젝트 루트 밖 파괴 또는 전체 파괴 패턴
 ROOT_DESTRUCTION_PATTERNS = [
-    r"\brm\s+-rf\s+/(?!\S)",        # rm -rf /
-    r"\brm\s+-rf\s+\.\s",           # rm -rf .
-    r"\brm\s+-rf\s+\.\.\s",         # rm -rf ..
-    r"\brm\s+-rf\s+\./\*",          # rm -rf ./*
-    r"\brm\s+-rf\s+\.\.",           # rm -rf ..
-    r"\bfind\s+/\s+-delete\b",      # find / -delete
-    r"\bfind\s+\.\.\s+-delete\b",   # find .. -delete
+    r"\brm\s+-rf\s+/(?!\S)",           # rm -rf /
+    r"\brm\s+-rf\s+\.(?:\s|$)",        # rm -rf .
+    r"\brm\s+-rf\s+\.\.(?:\s|$)",      # rm -rf ..
+    r"\brm\s+-rf\s+\./\*",             # rm -rf ./*
+    r"\bfind\s+/\s+-delete\b",         # find / -delete
+    r"\bfind\s+\.\.\s+-delete\b",      # find .. -delete
 ]
 
 # 원격/외부/git 파괴 패턴

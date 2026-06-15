@@ -55,7 +55,7 @@
 - 프로젝트 전체에서는 여러 도메인 브랜치가 각자 다른 TASK를 병렬로 실행할 수 있다.
 - 일반 TASK는 기존 흐름대로 실행한다. (orchestrator → implementer → verifier → reviewer → recorder → commit)
 - 기능 완료 시점에는 반드시 EVAL TASK를 실행한다.
-- EVAL TASK 완료 후 상태는 `PENDING_USER_VALIDATION`으로 둔다.
+- EVAL TASK 완료 후 TASK Status는 `DONE`으로 둔다. User Validation Status는 `PENDING_USER_VALIDATION`으로 둔다.
 - 사용자 `APPROVED` 전까지 다음 Feature group 또는 WBS group으로 진행하지 않는다.
 - `REQUEST_CHANGES`이면 correction TASK를 생성하거나 해당 기능 범위에서 수정한다.
 - `REJECTED`이면 기능 방향을 재검토하고 재작업 계획을 세운다.

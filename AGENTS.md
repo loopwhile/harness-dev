@@ -316,7 +316,7 @@ The agent must not continue to the next feature group until user validation is A
 
 EVAL TASK는 평가 완료 시점에 평가 로그와 사용자 검증 안내를 커밋한다.
 
-커밋하되 TASK 상태를 `PENDING_USER_VALIDATION`으로 남긴다.
+커밋하되 TASK Status는 `DONE`으로 둔다. User Validation Status는 `PENDING_USER_VALIDATION`으로 둔다.
 
 사용자가 APPROVED를 명시하기 전까지 다음 feature group 또는 WBS group으로 진행하지 않는다.
 
