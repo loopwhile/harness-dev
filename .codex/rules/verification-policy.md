@@ -1,5 +1,11 @@
 # Verification Policy
 
+## 적용 범위
+
+이 규칙은 **TASK Execution Mode**와 **EVAL TASK Flow**에서 적용한다.
+
+General / Analysis Mode에서는 검증 명령 실행 없이 분석 보고가 가능하다.
+
 ## 기본 원칙
 
 검증하지 않은 작업은 완료로 판단하지 않는다.

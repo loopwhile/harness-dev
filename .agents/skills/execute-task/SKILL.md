@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사용한다. TASK 분석, 구현, 검증, 리뷰, 기록, 커밋까지 진행하되 삭제/파괴성 작업은 사용자 승인을 요구한다.
+description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사용한다. TASK 분석, 구현, 검증, 리뷰, 기록, 커밋까지 진행한다.
 ---
 
 # Execute Task Skill
@@ -9,19 +9,23 @@ description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사�
 
 이 스킬은 `ops/tasks/TASK-xxx.md` 파일 하나를 기준으로 전체 작업을 자율 실행한다.
 
+이 스킬이 호출되면 **TASK Execution Mode**가 활성화된다.
+
 실행 흐름은 다음과 같다.
 
 1. TASK 분석
-2. 오케스트레이션
-3. 구현
-4. 검증
-5. 리뷰
-6. 기록
-7. 최종 커밋
+2. 브랜치 확인
+3. 오케스트레이션
+4. 구현 (Normal TASK) 또는 통합 검증 (EVAL TASK)
+5. 검증
+6. 리뷰 (Normal TASK)
+7. 평가 (EVAL TASK)
+8. 기록
+9. 최종 커밋
 
 ## 2. 기본 원칙
 
-- 한 번에 하나의 TASK만 실행한다.
+- 단일 에이전트 세션은 한 번에 하나의 TASK만 실행한다.
 - TASK 파일 없이 작업하지 않는다.
 - TASK의 allowed files 밖은 수정하지 않는다.
 - TASK의 forbidden files는 수정하지 않는다.
@@ -29,52 +33,43 @@ description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사�
 - 요구사항을 임의로 만들지 않는다.
 - 관련 없는 리팩터링을 하지 않는다.
 - 검증 없이 완료 처리하지 않는다.
-- 리뷰 없이 커밋하지 않는다.
+- 리뷰 없이 커밋하지 않는다. (Normal TASK)
 - 검증과 리뷰가 통과한 경우에만 커밋한다.
 
-## 3. 사용자에게 물어보지 않고 진행해도 되는 작업
+## 3. TASK 실행 중 사용자 승인 없이 허용하는 작업
 
 다음 작업은 TASK 범위 안이라면 사용자에게 묻지 않고 진행한다.
 
-- 파일 읽기
-- 코드 수정
-- 문서 수정
-- 테스트 파일 추가 또는 수정
-- 설정 파일 수정
-- 디렉터리 생성
-- 새 파일 생성
-- formatting
-- lint
-- type check
-- unit test
-- integration test
-- build
-- git status 확인
-- git diff 확인
+- TASK allowed files 내부 파일 생성
+- TASK allowed files 내부 파일 수정
+- TASK allowed files 내부 파일 삭제
+- TASK allowed files 내부 파일 이동/이름 변경
+- TASK allowed files 내부 디렉터리 생성
+- TASK allowed files 내부 디렉터리 정리
+- 테스트 파일 추가/수정/삭제
+- 검증 명령 실행
+- 빌드 명령 실행
+- 린트 명령 실행
+- 타입 체크 실행
+- git status
+- git diff
 - git add
-- TASK 완료 커밋
+- git commit
+- git restore --staged
+- TASK 로그 작성/수정
 
-## 4. 사용자 승인이 필요한 작업
+## 4. 절대 금지 또는 사용자 승인 필요
 
-다음 작업은 반드시 사용자에게 먼저 확인한다.
-
-- 파일 삭제
-- 디렉터리 삭제
-- `rm`
-- `rm -r`
-- `rm -rf`
-- `rmdir`
-- `unlink`
-- `git rm`
-- `git clean`
+- 프로젝트 루트 밖 파일 생성/수정/삭제
+- 프로젝트 루트 전체 삭제
+- .git 디렉터리 삭제
+- `rm -rf /`, `rm -rf .`, `rm -rf ..`, `rm -rf ./*`
+- `git clean -fdx`
 - `git reset --hard`
-- 데이터베이스 삭제
-- migration rollback
-- force push
+- `git push --force`
 - 원격 브랜치 삭제
-- 대량 파일 이동 또는 대량 파일명 변경
+- DB drop, 테이블 drop
 - TASK allowed files 밖의 파일 변경
-- TASK 범위를 넘어서는 구조 변경
 
 ## 5. TASK 실행 절차
 
@@ -83,6 +78,9 @@ description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사�
 3. TASK에서 다음 정보를 추출한다.
    - TASK ID
    - WBS ID
+   - Domain
+   - Branch
+   - Type
    - objective
    - source context
    - allowed files
@@ -91,19 +89,30 @@ description: ops/tasks/TASK-xxx.md 하나를 자율적으로 실행할 때 사�
    - acceptance criteria
    - verification commands
    - commit rule
-4. `git status --short`로 현재 작업 상태를 확인한다.
-5. 관련 없는 미커밋 변경사항이 있으면 작업을 중단하고 보고한다.
-6. 필요한 문서와 소스 파일만 읽는다.
-7. 구현 계획을 짧게 정리한다.
-8. TASK 범위 안에서 구현한다.
-9. verification commands를 실행한다.
-10. acceptance criteria를 하나씩 확인한다.
-11. git diff를 리뷰한다.
-12. `ops/logs/TASK-xxx.log.md`를 작성 또는 갱신한다.
-13. 검증과 리뷰가 통과하면 커밋한다.
-14. 최종 결과를 보고한다.
+4. 현재 git branch를 확인한다.
+   ```bash
+   git branch --show-current
+   ```
+5. 현재 branch가 TASK의 Branch와 일치하는지 확인한다. 불일치 시 BLOCKED.
+6. `git status --short`로 현재 작업 상태를 확인한다.
+7. 관련 없는 미커밋 변경사항이 있으면 작업을 중단하고 보고한다.
+8. TASK Type에 따라 분기한다.
+   - Type != eval → Normal TASK Flow (Mode 3A)
+   - Type == eval → EVAL TASK Flow (Mode 3B)
 
-EVAL TASK의 경우 다음 경로를 따른다.
+### Normal TASK Flow (Mode 3A)
+
+1. 필요한 문서와 소스 파일만 읽는다.
+2. 구현 계획을 짧게 정리한다.
+3. TASK 범위 안에서 구현한다.
+4. verification commands를 실행한다.
+5. acceptance criteria를 하나씩 확인한다.
+6. git diff를 리뷰한다.
+7. `ops/logs/TASK-xxx.log.md`를 작성 또는 갱신한다.
+8. 검증과 리뷰가 통과하면 커밋한다.
+9. 최종 결과를 보고한다.
+
+### EVAL TASK Flow (Mode 3B)
 
 1. EVAL TASK의 Evaluation Scope를 확인한다.
 2. 선행 TASK 로그(`ops/logs/TASK-xxx.log.md`)를 읽는다.
@@ -143,6 +152,8 @@ TASK-001 WBS-01-001: implement reservation creation API
 
 - TASK ID
 - WBS ID
+- Domain
+- Branch
 - 완료 여부
 - 수정 파일 목록
 - 검증 명령과 결과

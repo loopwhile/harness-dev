@@ -13,19 +13,16 @@ description: TASK 실행 후 구현 요약, 검증 증거, 리뷰 결과, 위험
 
 - `ops/logs/TASK-xxx.log.md`
 
-필요한 경우 TASK가 허용한 범위 안에서 다음 문서도 갱신할 수 있다.
-
-- `docs/08_ops/status/evidence_log.md`
-- `docs/08_ops/status/status_report.md`
-
 ## 2. 입력
 
 필수 입력:
 
 - TASK ID
 - WBS ID
+- Domain
+- Branch
 - objective
-- 변경 파일 목록
+- 변경 파일 목록 (변경 유형 포함)
 - 구현 요약
 - 검증 결과
 - 리뷰 결과
@@ -38,10 +35,15 @@ description: TASK 실행 후 구현 요약, 검증 증거, 리뷰 결과, 위험
 1. TASK ID와 WBS ID를 확인한다.
 2. `ops/logs/TASK-xxx.log.md` 파일을 생성하거나 갱신한다.
 3. 구현 요약을 기록한다.
-4. 변경 파일 목록을 기록한다.
+4. 변경 파일 목록을 변경 유형과 함께 기록한다.
+   - created: 새로 생성된 파일
+   - modified: 수정된 파일
+   - deleted: 삭제된 파일
+   - renamed: 이름이 변경된 파일
+   - moved: 이동된 파일
 5. 검증 명령과 결과를 기록한다.
 6. 리뷰 verdict와 리뷰 메모를 기록한다.
-7. 남은 위험 또는 후속 작업을 기록한다.
+7. 남은 위험과 후속 작업을 기록한다.
 8. 커밋 메시지와 커밋 해시를 기록한다.
 
 ## 4. 기록 원칙

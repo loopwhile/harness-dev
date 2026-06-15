@@ -1,5 +1,9 @@
 # Commit Policy
 
+## 적용 범위
+
+이 규칙은 **TASK Execution Mode**에서 적용한다.
+
 ## 기본 원칙
 
 하나의 TASK는 하나의 커밋으로 닫는다.

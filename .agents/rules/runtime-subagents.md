@@ -4,6 +4,10 @@ trigger: always_on
 
 # Runtime Subagents Rule
 
+## 적용 범위
+
+이 규칙은 **TASK Execution Mode**에서 runtime subagent를 사용할 때 적용한다.
+
 ## 목적
 
 이 규칙은 Antigravity CLI에서 TASK 실행 중 runtime subagent를 사용할 때의 역할, 책임, 출력 형식을 정의한다.
@@ -28,6 +32,24 @@ runtime subagent orchestration                     ← 실행 엔진
 - subagent 결과는 메인 agent가 최종 검토한다.
 - subagent가 완료했다고 해서 TASK가 완료된 것은 아니다.
 - 최종 완료 판단은 검증, 리뷰, 기록, 커밋 조건을 모두 확인한 뒤 수행한다.
+
+## 실행 흐름
+
+### Normal TASK Flow (Mode 3A)
+
+```text
+orchestrator → implementer → verifier → reviewer → recorder → commit → user report
+```
+
+### EVAL TASK Flow (Mode 3B)
+
+```text
+orchestrator → verifier → evaluator → recorder → commit → user validation guide → STOP
+```
+
+EVAL TASK에서는 implementer를 사용하지 않는다.
+
+EVAL TASK에서는 구현/리팩터링/테스트 수정 금지. 필요하면 correction TASK를 새로 만든다.
 
 ## 권장 역할
 
@@ -54,6 +76,8 @@ orchestrator는 다음 형식으로 결과를 낸다.
 Role: orchestrator
 TASK ID:
 WBS ID:
+Domain:
+Branch:
 Objective:
 Allowed files:
 Forbidden files:
@@ -73,6 +97,7 @@ Role: implementer
 TASK ID:
 Status:
 Changed files:
+  - path/to/file (created / modified / deleted / renamed / moved)
 Implementation summary:
 Notes:
 Risks:
@@ -135,7 +160,13 @@ Status:
 
 implementer는 구현만 수행한다.
 
+TASK allowed files 내부 생성/수정/삭제/이동/이름 변경은 사용자 승인 없이 수행한다.
+
 커밋은 메인 agent가 검증, 리뷰, 기록 완료 후 수행한다.
+
+EVAL TASK에서는 implementer를 사용하지 않는다.
+
+프로젝트 루트 밖 변경은 금지한다.
 
 ### verifier는 구현하지 않는다
 
@@ -143,17 +174,43 @@ verifier는 검증 실패 원인을 설명할 수 있지만 직접 구현을 수
 
 수정이 필요하면 implementer 단계로 되돌린다.
 
+Normal TASK에서는 verification commands를 실행한다.
+
+EVAL TASK에서는 선행 TASK 로그와 통합 검증 결과를 확인한다.
+
 ### reviewer는 구현하지 않는다
 
 reviewer는 문제를 지적하고 verdict를 낸다.
 
 직접 구현을 수정하지 않는다.
 
+Normal TASK에서는 필수다.
+
+EVAL TASK에서는 선택 사항이다.
+
 ### recorder는 사실만 기록한다
 
 recorder는 실행하지 않은 검증을 기록하지 않는다.
 
 실패한 작업을 성공으로 기록하지 않는다.
+
+파일 변경 유형을 명확히 기록한다: created, modified, deleted, renamed, moved.
+
+### evaluator는 구현하지 않는다
+
+evaluator는 품질 평가만 수행한다. Type: eval TASK에서만 사용한다.
+
+구현 파일을 수정하지 않는다.
+
+리팩터링을 하지 않는다.
+
+테스트를 수정하지 않는다.
+
+커밋하지 않는다.
+
+FAIL 또는 BLOCKED 시 보고하고 중단한다.
+
+자동으로 이전 TASK를 재실행하지 않는다.
 
 ## evaluator 출력 형식
 
@@ -179,22 +236,6 @@ Improvement Suggestions:
 User Validation Scenarios:
 ```
 
-### evaluator는 구현하지 않는다
-
-evaluator는 품질 평가만 수행한다.
-
-구현 파일을 수정하지 않는다.
-
-리팩터링을 하지 않는다.
-
-테스트를 수정하지 않는다.
-
-커밋하지 않는다.
-
-FAIL 또는 BLOCKED 시 보고하고 중단한다.
-
-자동으로 이전 TASK를 재실행하지 않는다.
-
 ## 병렬 실행 기준
 
 다음 작업은 병렬 실행할 수 있다.
@@ -207,10 +248,10 @@ FAIL 또는 BLOCKED 시 보고하고 중단한다.
 다음 작업은 순차 실행한다.
 
 ```text
-일반 TASK:
-TASK 분석 -> 구현 -> 검증 -> 리뷰 -> 기록 -> 커밋
+Normal TASK (Mode 3A):
+TASK 분석 -> 구현 -> 검증 -> 리뷰 -> 기록 -> 커밋 -> user report
 
-EVAL TASK:
+EVAL TASK (Mode 3B):
 TASK 분석 -> 통합 검증 -> 평가 -> 기록 -> 커밋 -> 사용자 검증 안내 -> STOP
 ```
 
@@ -221,6 +262,14 @@ TASK 분석 -> 통합 검증 -> 평가 -> 기록 -> 커밋 -> 사용자 검증 �
 기록은 검증과 리뷰 결과가 나온 뒤 수행한다.
 
 커밋은 모든 조건 충족 후 수행한다.
+
+## 브랜치별 병렬 실행
+
+프로젝트 전체에서는 여러 도메인 브랜치가 각자 다른 TASK를 병렬로 실행할 수 있다.
+
+단일 에이전트 세션은 한 번에 하나의 TASK만 실행한다.
+
+단일 브랜치는 한 번에 하나의 Active TASK만 가진다.
 
 ## 최종 완료 판단
 

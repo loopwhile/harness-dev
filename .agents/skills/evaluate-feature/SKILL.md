@@ -7,7 +7,7 @@ description: EVAL TASK에서 기능 또는 도메인 단위의 품질 평가를 
 
 ## 1. 목적
 
-이 스킬은 EVAL TASK에서 기능 또는 도메인 단위의 구현 품질을 평가한다.
+이 스킬은 EVAL TASK (TASK Execution Mode 내부의 Mode 3B, Type: eval)에서 기능 또는 도메인 단위의 구현 품질을 평가한다.
 
 evaluator는 구현자가 아니다. read-only 품질 평가자다.
 

@@ -4,9 +4,15 @@ trigger: always_on
 
 # Verification Policy
 
+## 적용 범위
+
+이 규칙은 **TASK Execution Mode**와 **EVAL TASK Flow**에서 적용한다.
+
+General / Analysis Mode에서는 검증 명령 실행 없이 분석 보고가 가능하다.
+
 ## 목적
 
-이 규칙은 Antigravity CLI가 검증 없이 작업을 완료 처리하지 않도록 강제한다.
+이 규칙은 TASK Execution Mode에서 검증 없이 작업을 완료 처리하지 않도록 강제한다.
 
 TASK 완료는 구현이 아니라 검증 통과를 기준으로 판단한다.
 

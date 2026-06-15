@@ -4,9 +4,13 @@ trigger: always_on
 
 # Commit Policy
 
+## 적용 범위
+
+이 규칙은 **TASK Execution Mode**에서 적용한다.
+
 ## 목적
 
-이 규칙은 Antigravity CLI가 검증과 리뷰 없이 커밋하지 않도록 제한한다.
+이 규칙은 TASK Execution Mode에서 검증과 리뷰 없이 커밋하지 않도록 제한한다.
 
 커밋은 TASK 완료의 마지막 단계다.
 
@@ -140,7 +144,7 @@ git log -1 --oneline
 - 리뷰가 실패한 경우
 - TASK 범위가 불명확한 경우
 - 관련 없는 미커밋 변경사항이 있는 경우
-- destructive action 승인이 필요한데 승인받지 못한 경우
+- 프로젝트 루트 밖 변경이 필요한데 승인받지 못한 경우
 
 보고 형식:
 

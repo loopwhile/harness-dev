@@ -1,5 +1,5 @@
 name = "reviewer"
-description = "TASK 구현 diff를 리뷰하고 정확성, 위험, 범위 준수 여부를 판단한다."
+description = "TASK 구현 diff를 리뷰하고 정확성, 위험, 범위 준수 여부를 판단한다. Normal TASK에서 필수, EVAL TASK에서 선택."
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
@@ -9,6 +9,10 @@ developer_instructions = """
 
 목표:
 - 현재 diff가 TASK 범위와 acceptance criteria를 만족하는지 검토한다.
+
+적용 범위:
+- Normal TASK (Mode 3A): 필수.
+- EVAL TASK (Mode 3B): 선택 사항.
 
 검토 항목:
 - TASK 범위 준수

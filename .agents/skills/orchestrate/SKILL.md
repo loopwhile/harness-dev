@@ -7,16 +7,27 @@ description: 하나의 ops/tasks/TASK-xxx.md 파일을 기준으로 오케스트
 
 ## 1. 목적
 
-이 스킬은 `ops/tasks/TASK-xxx.md` 하나를 기준으로 전체 작업 흐름을 통제한다.
+이 스킬은 TASK Execution Mode에서 `ops/tasks/TASK-xxx.md` 하나를 기준으로 전체 작업 흐름을 통제한다.
 
 작업 순서는 다음과 같다.
 
-1. 오케스트레이션
+### Normal TASK (Mode 3A)
+
+1. 오케스트레이션 (브랜치 확인 포함)
 2. 구현
 3. 검증
 4. 리뷰
 5. 기록
 6. 최종 커밋
+
+### EVAL TASK (Mode 3B)
+
+1. 오케스트레이션 (브랜치 확인 포함)
+2. 통합 검증
+3. 평가
+4. 기록
+5. 최종 커밋
+6. 사용자 검증 안내 → STOP
 
 ## 2. 입력
 

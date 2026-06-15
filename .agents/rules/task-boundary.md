@@ -4,9 +4,15 @@ trigger: always_on
 
 # Task Boundary Rule
 
+## 적용 범위
+
+이 규칙은 **TASK Execution Mode**에서만 강하게 적용한다.
+
+General / Analysis Mode에서는 TASK 없이도 저장소 분석, 문서 점검, 계획 작성이 가능하다.
+
 ## 목적
 
-이 규칙은 Antigravity CLI가 TASK 범위를 벗어난 작업을 수행하지 않도록 제한한다.
+이 규칙은 TASK Execution Mode에서 에이전트가 TASK 범위를 벗어난 작업을 수행하지 않도록 제한한다.
 
 이 저장소의 실제 작업 단위는 반드시 다음 파일이다.
 
@@ -18,13 +24,33 @@ Antigravity 내부의 `task.md`, task list, `implementation_plan.md`, `walkthrou
 
 ## 기본 원칙
 
-- 한 번에 하나의 TASK만 실행한다.
+- 단일 에이전트 세션은 한 번에 하나의 TASK만 실행한다.
+- 단일 브랜치는 한 번에 하나의 Active TASK만 가진다.
+- 프로젝트 전체에서는 서로 다른 도메인 브랜치가 서로 다른 TASK를 병렬로 실행할 수 있다.
 - TASK 파일에 명시된 작업만 수행한다.
 - TASK 범위를 임의로 확장하지 않는다.
 - TASK에 없는 요구사항을 만들지 않는다.
 - TASK에 없는 리팩터링을 하지 않는다.
 - TASK에 없는 문서 수정을 하지 않는다.
 - TASK에 없는 파일 이동, 파일명 변경, 삭제를 하지 않는다.
+
+## 브랜치 확인
+
+TASK 실행 전 반드시 현재 git branch를 확인한다.
+
+```bash
+git branch --show-current
+```
+
+현재 브랜치가 TASK의 `Branch`와 다르면 중단한다.
+
+```text
+현재 브랜치: payment
+TASK Branch: reservation
+
+결과:
+BLOCKED - TASK branch mismatch
+```
 
 ## 기준 파일
 
@@ -123,6 +149,8 @@ git status --short
 
 - TASK ID
 - WBS ID
+- Domain
+- Branch
 - objective
 - source context
 - allowed files
