@@ -3,10 +3,10 @@
 Antigravity PreToolUse hook.
 
 목적:
-- run_command 도구로 실행되는 삭제/파괴성 명령을 감지한다.
-- 초기 버전에서는 강제 차단이 아니라 경고 출력 중심으로 둔다.
-- 실제 차단 응답 포맷은 Antigravity CLI 버전별로 달라질 수 있으므로,
-  우선 AGENTS.md와 agent instruction의 사용자 승인 규칙을 1차 안전장치로 사용한다.
+- run_command 도구로 실행되는 명령 중 프로젝트 루트 밖 파괴,
+  프로젝트 전체 삭제, 원격/외부 시스템 파괴만 감지한다.
+- TASK allowed files 내부의 일반적인 rm, git rm 등은 허용한다.
+- 현재는 경고만 출력한다. 향후 exit code 1로 차단 가능.
 """
 
 from __future__ import annotations
@@ -17,17 +17,41 @@ import sys
 from typing import Any
 
 
-DESTRUCTIVE_PATTERNS = [
-    r"(^|\s)rm\s+",
-    r"(^|\s)rmdir\s+",
-    r"(^|\s)unlink\s+",
-    r"(^|\s)git\s+rm\s+",
-    r"(^|\s)git\s+clean\s+",
-    r"(^|\s)git\s+reset\s+--hard\b",
-    r"(^|\s)git\s+push\s+--force\b",
-    r"(^|\s)drop\s+database\b",
-    r"(^|\s)drop\s+table\b",
+# 프로젝트 루트 밖 파괴 또는 전체 파괴 패턴
+ROOT_DESTRUCTION_PATTERNS = [
+    r"\brm\s+-rf\s+/(?!\S)",        # rm -rf /
+    r"\brm\s+-rf\s+\.\s",           # rm -rf .
+    r"\brm\s+-rf\s+\.\.\s",         # rm -rf ..
+    r"\brm\s+-rf\s+\./\*",          # rm -rf ./*
+    r"\brm\s+-rf\s+\.\.",           # rm -rf ..
+    r"\bfind\s+/\s+-delete\b",      # find / -delete
+    r"\bfind\s+\.\.\s+-delete\b",   # find .. -delete
 ]
+
+# 원격/외부/git 파괴 패턴
+REMOTE_DESTRUCTION_PATTERNS = [
+    r"\bgit\s+reset\s+--hard\b",
+    r"\bgit\s+clean\s+-fdx\b",
+    r"\bgit\s+push\s+--force\b",
+    r"\bgit\s+push\s+--force-with-lease\b",
+    r"\bdrop\s+database\b",
+    r"\bdrop\s+table\b",
+    r"\btruncate\s+table\b",
+]
+
+# 시스템 레벨 위험 패턴
+SYSTEM_PATTERNS = [
+    r"\bsudo\b",
+    r"\bchmod\s+-R\s+777\b",
+    r"\bchown\s+-R\b",
+    r">\s*/dev/sd[a-z]",
+]
+
+ALL_BLOCKED_PATTERNS = (
+    ROOT_DESTRUCTION_PATTERNS
+    + REMOTE_DESTRUCTION_PATTERNS
+    + SYSTEM_PATTERNS
+)
 
 
 def read_payload() -> dict[str, Any]:
@@ -78,14 +102,13 @@ def main() -> int:
     if not command:
         return 0
 
-    normalized = command.strip().lower()
-
-    for pattern in DESTRUCTIVE_PATTERNS:
-        if re.search(pattern, normalized):
+    for pattern in ALL_BLOCKED_PATTERNS:
+        if re.search(pattern, command, re.IGNORECASE):
             print(
-                "[Antigravity Harness Warning] 삭제 또는 파괴성 명령이 감지되었습니다.\n"
+                "[Antigravity Harness Warning] 프로젝트 루트 밖 파괴 또는 원격/외부 파괴 명령이 감지되었습니다.\n"
                 f"명령: {command}\n"
-                "AGENTS.md 규칙에 따라 사용자 승인을 먼저 받아야 합니다.\n",
+                f"패턴: {pattern}\n"
+                "AGENTS.md 규칙에 따라 이 작업은 사용자 승인이 필요합니다.\n",
                 file=sys.stderr,
             )
             return 0

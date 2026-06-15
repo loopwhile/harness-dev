@@ -5,7 +5,8 @@ Antigravity Stop hook.
 목적:
 - 에이전트 실행 종료 시점에 저장소 상태를 확인한다.
 - 미커밋 변경사항이 남아 있으면 경고한다.
-- TASK 기반 작업은 검증, 리뷰, 기록, 커밋으로 닫아야 한다.
+- TASK Execution Mode에서 작업한 경우 검증, 리뷰, 기록, 커밋으로 닫아야 한다.
+- General / Analysis Mode에서는 미커밋 변경이 없을 수 있으며 이는 정상이다.
 """
 
 from __future__ import annotations
@@ -40,7 +41,8 @@ def main() -> int:
     if stdout:
         print(
             "[Antigravity Harness Warning] 미커밋 변경사항이 남아 있습니다.\n"
-            "TASK가 완료된 상태라면 검증, 리뷰, 기록 후 커밋으로 닫아야 합니다.\n"
+            "TASK Execution Mode에서 작업한 경우 검증, 리뷰, 기록 후 커밋으로 닫아야 합니다.\n"
+            "General / Analysis Mode에서는 이 경고를 무시할 수 있습니다.\n"
             f"{stdout}",
             file=sys.stderr,
         )
@@ -48,7 +50,7 @@ def main() -> int:
     logs_dir = Path("ops/logs")
     if not logs_dir.exists():
         print(
-            "[Antigravity Harness Warning] ops/logs 디렉터리가 없습니다. TASK 기록 정책을 확인하세요.",
+            "[Antigravity Harness Info] ops/logs 디렉터리가 없습니다. TASK 기록 정책을 확인하세요.",
             file=sys.stderr,
         )
 

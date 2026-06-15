@@ -5,6 +5,7 @@ Codex PostToolUse hook.
 목적:
 - Bash 명령 실행 이후 결과를 확인한다.
 - 실패한 명령이 있으면 경고를 출력한다.
+- TASK Execution Mode에서는 실패한 검증을 숨기지 않도록 안내한다.
 - 초기 버전에서는 차단하지 않는다.
 """
 
@@ -35,7 +36,7 @@ def main() -> int:
     if success is False:
         print(
             "[경고] 방금 실행한 명령이 실패했습니다. "
-            "검증 실패를 숨기지 말고 TASK 로그에 기록하세요.",
+            "TASK Execution Mode에서는 검증 실패를 숨기지 말고 TASK 로그에 기록하세요.",
             file=sys.stderr,
         )
 
