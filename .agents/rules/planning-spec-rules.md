@@ -32,13 +32,15 @@ Stitch = 화면 프레임 생성 도구
 2. 기능명세 (functional_spec)
 3. 사용자 흐름 (user_flows)
 4. 화면정의 (screen_definition)
-5. Stitch 프롬프트 작성
-6. Stitch 결과 정리
-7. UI handoff 작성
-8. 아키텍처 / 모듈 경계 / 시퀀스
-9. API / DB / 상태 / 에러 계약
-10. WBS / TASK 생성
-11. 개발 착수 가능성 리뷰
+5. DESIGN.md 작성 (전역 + 프론트엔드별)
+6. Stitch 프롬프트 작성
+7. Stitch 결과 정리
+8. UI handoff 작성
+9. 아키텍처 / 모듈 경계 / 아키텍처 다이어그램
+10. 도메인별 시퀀스 다이어그램
+11. API / DB / 상태 / 에러 계약
+12. WBS / TASK 생성
+13. 개발 착수 가능성 리뷰
 
 ## 사용자 승인 Gate
 
@@ -114,6 +116,95 @@ Stitch 결과 코드는 다음처럼 취급한다.
 UI 구조 참고 ✅
 컴포넌트 설계 참고 ✅
 프론트 TASK 입력 ✅
+DESIGN.md 반영 후보 ✅
+```
+
+## DESIGN.md 작성 기준
+
+DESIGN.md는 프론트엔드 UI/UX의 기준 문서다.
+
+구조:
+
+```text
+docs/06_design/DESIGN.md
+= 프로젝트 전체 UI/UX 기준 문서
+
+docs/06_design/frontends/<frontend>/DESIGN.md
+= 특정 프론트엔드 앱의 UI/UX 기준 문서
+```
+
+필수 내용:
+
+```text
+Design Principles
+Brand Tone
+Color / Typography / Spacing
+Layout Principles
+Navigation Rules
+Responsive Rules
+Component Guidelines
+Form / Validation UX
+Error / Empty / Loading States
+Accessibility Rules
+Screen Pattern Rules
+Stitch Extraction Notes
+Frontend Implementation Notes
+```
+
+진실 공급원 우선순위:
+
+```text
+1. screen_definition/<domain>.md
+2. docs/06_design/DESIGN.md
+3. docs/06_design/frontends/<frontend>/DESIGN.md
+4. ui_handoff/<domain>.md
+5. Stitch results
+6. Stitch prompts
+```
+
+## 시퀀스 다이어그램 작성 기준
+
+시퀀스 다이어그램은 대표 하나만 만들지 않는다. 도메인별 핵심 흐름을 작성한다.
+
+반드시 작성하는 흐름:
+
+```text
+- 인증/인가가 개입되는 흐름
+- 결제/환불/정산 흐름
+- 예약/주문/승인처럼 상태가 바뀌는 흐름
+- 외부 API 연동 흐름
+- 알림/이메일/FCM 흐름
+- 배치/스케줄러 흐름
+- 실패/보상 처리 흐름
+```
+
+초기에는 단일 파일 + 도메인별 섹션, 커지면 디렉토리 분리:
+
+```text
+기본: docs/04_architecture/sequence_diagrams.md
+커졌을 때: docs/04_architecture/sequence/<domain>.md
+```
+
+## 아키텍처 다이어그램 작성 기준
+
+텍스트 아키텍처만으로는 부족하다. Mermaid 기반 다이어그램을 포함한다.
+
+최소 필수 다이어그램:
+
+```text
+1. System Context Diagram - 사용자, 관리자, 외부 시스템, 서비스 관계
+2. Container Diagram - frontend, backend, DB, storage, external API, batch, queue
+3. Module Boundary Diagram - 도메인별 내부 모듈 경계
+4. Deployment Diagram - 실제 배포 구조
+```
+
+필요시 추가:
+
+```text
+5. Data Flow Diagram
+6. Security Boundary Diagram
+7. Frontend App Architecture Diagram
+8. Event / Async Flow Diagram
 ```
 
 ## 문서 구조 기준
@@ -135,10 +226,13 @@ UI 구조 참고 ✅
 - 화면정의 없이 프론트엔드 TASK를 만들지 않는다.
 - API/DB 명세 없이 백엔드 TASK를 만들지 않는다.
 - UI handoff 없이 프론트엔드 구현 TASK를 만들지 않는다.
+- DESIGN.md 없이 프론트엔드 구현 TASK를 만들지 않는다.
 - "회원 기능", "결제 기능"처럼 큰 단위로 TASK를 만들지 않는다.
 - 기능 ID → 화면 ID → API ID → 테이블 → 테스트 → TASK 연결이 없는 산출물을 만들지 않는다.
 - Stitch 결과 코드를 프로덕션 코드로 바로 사용하지 않는다.
 - Mode 2에서 소스 코드 구현을 수행하지 않는다.
+- 아키텍처 다이어그램 없이 아키텍처 문서를 완료하지 않는다.
+- 도메인별 시퀀스 없이 API 계약을 완료하지 않는다.
 
 ## WBS/TASK 생성 기준
 

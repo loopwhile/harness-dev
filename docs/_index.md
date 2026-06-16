@@ -26,6 +26,7 @@
 
 ### 아키텍처 (Architecture)
 - 시스템 아키텍처: `docs/04_architecture/system_architecture.md`
+- 아키텍처 다이어그램: `docs/04_architecture/architecture_diagrams.md`
 - 모듈 경계: `docs/04_architecture/module_boundaries.md`
 - 런타임 흐름: `docs/04_architecture/runtime_flow.md`
 - 시퀀스 다이어그램: `docs/04_architecture/sequence_diagrams.md`
@@ -38,6 +39,8 @@
 - 에러 명세: `docs/05_contracts/error_spec.md`
 
 ### 디자인 (Design)
+- 전역 디자인 기준: `docs/06_design/DESIGN.md`
+- 프론트엔드별 디자인 기준: `docs/06_design/frontends/<frontend>/DESIGN.md`
 - 디자인 방향: `docs/06_design/design_direction.md`
 - Stitch 프롬프트: `docs/06_design/stitch/prompts/`
 - Stitch 결과 정리: `docs/06_design/stitch/results/`
@@ -61,11 +64,14 @@
 - 기능명세: `docs/03_requirements/functional_spec/`
 - 사용자 흐름: `docs/03_requirements/user_flows.md`
 - 화면정의: `docs/03_requirements/screen_definition/`
+- 전역 디자인 기준: `docs/06_design/DESIGN.md`
+- 프론트엔드별 디자인: `docs/06_design/frontends/`
 - 디자인 방향: `docs/06_design/design_direction.md`
 - Stitch 프롬프트: `docs/06_design/stitch/prompts/`
 - Stitch 결과: `docs/06_design/stitch/results/`
 - UI handoff: `docs/06_design/ui_handoff/`
-- 아키텍처/시퀀스: `docs/04_architecture/`
+- 아키텍처/다이어그램: `docs/04_architecture/`
+- 시퀀스 다이어그램: `docs/04_architecture/sequence_diagrams.md`
 - API/DB/상태/에러 계약: `docs/05_contracts/`
 - WBS/TASK: `docs/09_pm/wbs/`, `ops/tasks/`
 
@@ -74,8 +80,10 @@
 - 활성(Active) WBS
 - 관련 기능명세 섹션
 - 관련 화면정의 섹션
+- 관련 DESIGN.md
+- 관련 UI handoff
 - 관련 계약(Contract) 섹션
-- UI handoff
+- 관련 시퀀스 다이어그램
 - 대상 파일들 (src/)
 
 ### 검증 시 (For verification)

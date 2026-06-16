@@ -39,11 +39,13 @@
 - 기능명세 작성 (functional_spec)
 - 사용자 흐름 작성 (user_flows)
 - 화면정의 작성 (screen_definition)
+- DESIGN.md 작성 (전역 + 프론트엔드별)
 - Stitch 프롬프트 작성
 - Stitch 결과 정리
 - UI handoff 작성
 - 시스템 아키텍처 작성
-- 시퀀스 다이어그램 작성
+- 아키텍처 다이어그램 작성 (Mermaid)
+- 도메인별 시퀀스 다이어그램 작성
 - ERD / 테이블 명세 작성
 - API / 상태 / 에러 명세 작성
 - WBS / TASK 생성
