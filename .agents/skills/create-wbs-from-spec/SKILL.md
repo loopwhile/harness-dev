@@ -20,6 +20,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - docs/05_contracts/api/api_contract.md
 - docs/05_contracts/data/erd.md
 - docs/06_design/DESIGN.md (있는 경우)
+- docs/06_design/frontends/<frontend>/DESIGN.md (있는 경우)
 - docs/06_design/ui_handoff/<domain>.md (있는 경우)
 - docs/04_architecture/system_architecture.md
 - docs/04_architecture/architecture_diagrams.md (있는 경우)
