@@ -24,10 +24,12 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 ## 3. 출력
 
-| 산출물 | 경로 |
+spec-reviewer는 보고서 초안을 응답으로 반환한다. 파일 기록은 메인 에이전트 또는 recorder가 수행한다.
+
+| 보고서 초안 | 기록 경로 (메인 에이전트가 기록) |
 |---|---|
-| 명세 갭 보고서 | docs/09_pm/spec_gap_report.md |
-| 개발 착수 가능성 보고서 | docs/09_pm/release_readiness_for_development.md |
+| 명세 갭 보고서 초안 | docs/09_pm/spec_gap_report.md |
+| 개발 착수 가능성 보고서 초안 | docs/09_pm/release_readiness_for_development.md |
 
 ## 4. 절차
 
@@ -39,8 +41,8 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 6. API/DB/상태/에러 연결을 검수한다.
 7. WBS/TASK 생성 가능성을 검수한다.
 8. 판정값을 산출한다.
-9. spec_gap_report.md를 작성한다.
-10. release_readiness_for_development.md를 작성한다.
+9. spec_gap_report.md 초안을 생성한다. (응답으로 반환, 메인 에이전트가 파일로 기록)
+10. release_readiness_for_development.md 초안을 생성한다. (응답으로 반환, 메인 에이전트가 파일로 기록)
 11. 제품 오너에게 Gate 8. Development Readiness Approval을 요청한다.
 
 ## 5. 검수 체크리스트

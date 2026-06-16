@@ -56,6 +56,7 @@
 - docs/03_requirements/**
 - docs/04_architecture/**
 - docs/05_contracts/**
+- docs/06_design/**
 - docs/09_pm/wbs/**
 - .git/**
 - 

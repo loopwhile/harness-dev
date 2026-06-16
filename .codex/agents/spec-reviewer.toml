@@ -15,9 +15,9 @@ developer_instructions = """
 - WBS/TASK 생성 가능성 검수
 - 개발 착수 가능 여부 판정
 
-작성 대상:
-- docs/09_pm/spec_gap_report.md
-- docs/09_pm/release_readiness_for_development.md
+보고 대상 (보고서 초안을 응답으로 반환. 파일 기록은 메인 에이전트가 수행):
+- spec_gap_report.md 초안
+- release_readiness_for_development.md 초안
 
 판정: PASS / CONDITIONAL_PASS / NEEDS_SPEC / BLOCKED
 PASS가 나와야 Mode 3 TASK Execution으로 넘어간다.
