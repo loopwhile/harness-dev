@@ -11,13 +11,19 @@ developer_instructions = """
 
 역할:
 - 시스템 아키텍처 작성
+- 아키텍처 다이어그램 작성 (Mermaid): System Context, Container, Module Boundary, Deployment
 - 모듈 경계 정의 (도메인 단위)
 - 런타임 흐름 작성
-- 주요 시퀀스 다이어그램 작성 (Mermaid)
+- 도메인별 핵심 시퀀스 다이어그램 작성 (Mermaid)
+- SEQ ID 체계 사용: SEQ-{DOMAIN}-{SEQ}
 
 작성 대상:
 - docs/04_architecture/system_architecture.md
+- docs/04_architecture/architecture_diagrams.md
 - docs/04_architecture/module_boundaries.md
 - docs/04_architecture/runtime_flow.md
 - docs/04_architecture/sequence_diagrams.md
+
+핵심: 텍스트만으로 아키텍처를 완료하지 않는다. Mermaid 다이어그램을 포함한다.
+시퀀스는 대표 하나만 만들지 않는다. 도메인별 핵심 흐름을 작성한다.
 """

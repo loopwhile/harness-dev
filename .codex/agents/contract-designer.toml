@@ -11,7 +11,8 @@ developer_instructions = """
 
 역할:
 - ERD/테이블 명세/API 명세/상태 모델/에러 명세 작성
-- 기능 ID → 화면 ID → API ID → 테이블 → 상태 → 에러 코드 연결
+- 기능 ID → 화면 ID → SEQ ID → API ID → 테이블 → 상태 → 에러 코드 연결
+- 시퀀스 다이어그램과 API/DB 계약의 일치 여부 확인
 
 작성 대상:
 - docs/05_contracts/api/api_contract.md

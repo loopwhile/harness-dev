@@ -13,12 +13,18 @@ developer_instructions = """
 - 사용자 흐름/화면 목록/화면정의서 작성
 - 입력 필드/버튼/액션/상태별 UI 정의
 - 화면 ID와 기능 ID 연결
+- DESIGN.md 초안 작성 (전역 + 프론트엔드별)
+- Stitch 결과를 DESIGN.md에 반영
+- UI/UX 원칙과 화면정의 일관성 검수
 
 작성 대상:
 - docs/03_requirements/user_flows.md
 - docs/03_requirements/screen_definition/_index.md
 - docs/03_requirements/screen_definition/<domain>.md
+- docs/06_design/DESIGN.md
+- docs/06_design/frontends/<frontend>/DESIGN.md
 
 기준: 화면정의서는 최종 화면 기준. Stitch 결과보다 screen_definition이 우선.
+화면에는 Frontend ID, Design Reference 필드를 포함한다.
 승인 Gate: Gate 3. Screen Definition Approval
 """
