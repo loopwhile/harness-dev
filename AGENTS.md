@@ -6,8 +6,8 @@
 
 목표는 다음과 같다.
 
-1. 웹브라우저 ChatGPT에서 상위 문서와 WBS를 작성한다.
-2. Codex CLI, Antigravity CLI 같은 로컬 AI 개발 도구는 TASK 단위로만 구현 작업을 수행한다.
+1. Mode 2에서 AI 제품팀이 기획/설계/명세/디자인 전달 문서를 완성한다.
+2. Mode 3에서 AI 개발팀이 TASK 단위로 구현/검증/커밋한다.
 3. 각 TASK는 `ops/tasks/TASK-xxx.md` 파일 하나로 정의한다.
 4. 작업은 오케스트레이션 에이전트가 관리한다.
 5. 구현, 검증, 리뷰, 기록은 각각 분리된 에이전트 또는 스킬이 담당한다.
@@ -31,14 +31,27 @@
 - WBS/TASK 작성 전 사전 검토
 - 사용자 질문 답변
 
-### Mode 2. Planning / WBS Mode
+### Mode 2. Planning / Specification Mode
 
 - TASK 없이 가능
-- docs/ 작성
-- WBS 작성
-- TASK 설계
+- 제품 정의 (product_brief, PRD, scope, business_rules)
+- 요구사항 정리
+- 기능명세 작성 (functional_spec)
+- 사용자 흐름 작성 (user_flows)
+- 화면정의 작성 (screen_definition)
+- Stitch 프롬프트 작성
+- Stitch 결과 정리
+- UI handoff 작성
+- 시스템 아키텍처 작성
+- 시퀀스 다이어그램 작성
+- ERD / 테이블 명세 작성
+- API / 상태 / 에러 명세 작성
+- WBS / TASK 생성
 - EVAL TASK 배치
-- 템플릿 정리
+- 개발 착수 가능성 리뷰
+
+Mode 2에서는 소스 코드 구현을 수행하지 않는다.
+Mode 2의 최종 산출물은 Mode 3 TASK Execution Mode의 입력이 된다.
 
 ### Mode 3. TASK Execution Mode
 
@@ -72,7 +85,8 @@ EVAL TASK는 TASK Execution Mode 내부에서 Type: eval일 때 활성화되는 
 
 ```text
 TASK는 TASK Execution Mode에서만 필수다.
-General / Analysis Mode와 Planning / WBS Mode에서는 TASK 없이도 분석, 점검, 계획 작성, 문서 설계, WBS/TASK 설계가 가능하다.
+General / Analysis Mode와 Planning / Specification Mode에서는 TASK 없이도 분석, 점검, 계획 작성, 기획/설계/명세 작성, WBS/TASK 설계가 가능하다.
+Mode 2에서는 코드 구현을 수행하지 않는다. Mode 3 TASK Execution에서만 구현한다.
 ```
 
 ## 3. 진실 공급원
@@ -214,10 +228,11 @@ TASK 실행 스킬은 실행 전 현재 git branch가 TASK의 Branch와 일치�
 - 검증을 생략하지 않는다.
 - 검증 또는 리뷰가 실패하면 커밋하지 않는다.
 
-### General / Analysis Mode와 Planning / WBS Mode에서의 규칙
+### General / Analysis Mode와 Planning / Specification Mode에서의 규칙
 
-- TASK 없이도 저장소 분석, 문서 점검, 계획 작성이 가능하다.
+- TASK 없이도 저장소 분석, 문서 점검, 계획 작성, 기획/설계/명세 작성이 가능하다.
 - 구현 코드 변경은 TASK Execution Mode에서만 수행한다.
+- Mode 2에서는 소스 코드 구현을 하지 않는다.
 
 ## 9. 커밋 규칙
 
@@ -348,7 +363,9 @@ TASK 상태와 사용자 검증 상태는 별도 필드다.
 
 하네스는 항상 모든 작업을 막는 전역 족쇄가 아니다.
 
-General / Analysis Mode에서는 TASK 없이도 저장소 분석, 문서 점검, 계획 작성, WBS/TASK 설계가 가능하다.
+General / Analysis Mode에서는 TASK 없이도 저장소 분석, 문서 점검, 계획 작성이 가능하다.
+
+Planning / Specification Mode에서는 TASK 없이도 기획/설계/명세/디자인 전달 문서 작성, WBS/TASK 설계가 가능하다. 소스 코드 구현은 수행하지 않는다.
 
 TASK Execution Mode는 사용자가 execute-task 또는 antigravity-execute-task 스킬로 특정 ops/tasks/TASK-xxx.md 실행을 요청한 경우에만 활성화된다.
 
@@ -369,3 +386,5 @@ TASK 실행 스킬은 실행 전 현재 git branch가 TASK의 Branch와 일치�
 EVAL TASK는 TASK Execution Mode 내부에서 Type: eval일 때 활성화되는 특수 Flow다.
 
 ops/에는 tasks, logs, templates만 둔다.
+
+기획/설계용 템플릿은 `.agents/templates/`에 둔다.
