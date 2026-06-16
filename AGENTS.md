@@ -272,6 +272,7 @@ TASK는 다음 조건을 모두 만족해야 완료로 본다.
 | `.agents/rules/` | Antigravity 행동 규칙 |
 | `.agents/agents/` | Antigravity runtime subagent 정의 |
 | `.agents/hooks/` | Antigravity lifecycle hook 스크립트 |
+| `.agents/templates/` | 기획/설계용 템플릿 (Mode 2) |
 | `.codex/agents/` | Codex 전용 custom subagent 정의 |
 | `.codex/hooks/` | Codex lifecycle hook 스크립트 |
 | `.codex/rules/` | Codex 작업 정책 문서 |

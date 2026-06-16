@@ -27,13 +27,18 @@
 | WBS | docs/09_pm/wbs/wbs_xx_xxx.md | Yes |
 | PRD | docs/02_product/prd.md | No |
 | Scope | docs/02_product/scope.md | No |
-| Functional Requirements | docs/03_requirements/functional_requirements.md | No |
-| Non-functional Requirements | docs/03_requirements/non_functional_requirements.md | No |
+| Business Rules | docs/02_product/business_rules.md | No |
+| Functional Spec | docs/03_requirements/functional_spec/<domain>.md | No |
+| Screen Definition | docs/03_requirements/screen_definition/<domain>.md | No |
+| User Flows | docs/03_requirements/user_flows.md | No |
+| UI Handoff | docs/06_design/ui_handoff/<domain>.md | No |
 | Architecture | docs/04_architecture/system_architecture.md | No |
+| Sequence Diagrams | docs/04_architecture/sequence_diagrams.md | No |
 | API Contract | docs/05_contracts/api/api_contract.md | No |
-| Error Contract | docs/05_contracts/api/error_contract.md | No |
-| Data Contract | docs/05_contracts/data/schema.md | No |
-| UI Contract | docs/05_contracts/ui/component_contract.md | No |
+| Table Spec | docs/05_contracts/data/table_spec.md | No |
+| State Model | docs/05_contracts/state_model.md | No |
+| Error Spec | docs/05_contracts/error_spec.md | No |
+| ERD | docs/05_contracts/data/erd.md | No |
 | Test Strategy | docs/07_test_qa/test_strategy.md | No |
 
 ## 3. Allowed Files

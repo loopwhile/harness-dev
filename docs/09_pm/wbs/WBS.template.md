@@ -62,11 +62,11 @@ Domain (WBS-XX)
 
 | Order | TASK ID | Title | Type | Priority | Dependencies | Status | Notes |
 |---:|---|---|---|---|---|---|---|
-| 1 | TASK-XXX | 요청/응답 계약 정의 | feature | P1 |  | TODO |  |
-| 2 | TASK-XXX | 백엔드 기본 흐름 구현 | feature | P1 | TASK-XXX | TODO |  |
-| 3 | TASK-XXX | 예외/검증 처리 | feature | P1 | TASK-XXX | TODO |  |
-| 4 | TASK-XXX | 프론트엔드 연결 | feature | P2 | TASK-XXX | TODO |  |
-| 5 | TASK-XXX | 테스트 보강 | test | P2 | TASK-XXX | TODO |  |
+| 1 | TASK-XXX | 기능명세/화면정의 보강 | docs | P1 |  | TODO |  |
+| 2 | TASK-XXX | API/DB 계약 보강 | docs | P1 | TASK-XXX | TODO |  |
+| 3 | TASK-XXX | 백엔드 구현 | feature | P1 | TASK-XXX | TODO |  |
+| 4 | TASK-XXX | 프론트엔드 구현 | feature | P2 | TASK-XXX | TODO |  |
+| 5 | TASK-XXX | 테스트/E2E 작성 | test | P2 | TASK-XXX | TODO |  |
 | 6 | TASK-XXX | EVAL: [기능명] 평가 및 사용자 검증 안내 | eval | P1 | TASK-XXX ~ TASK-XXX | TODO |  |
 
 ### WBS-XX-002 [기능명]
