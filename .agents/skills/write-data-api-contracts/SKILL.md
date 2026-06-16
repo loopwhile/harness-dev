@@ -17,6 +17,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - docs/03_requirements/screen_definition/<domain>.md
 - docs/06_design/ui_handoff/<domain>.md (있는 경우)
 - docs/04_architecture/system_architecture.md
+- docs/04_architecture/sequence_diagrams.md (있는 경우)
 
 ## 3. 출력
 
@@ -33,18 +34,20 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 1. 기능명세와 화면정의를 읽는다.
 2. `.agents/templates/contract_spec.template.md`를 참고한다.
 3. API 엔드포인트를 도출한다. (기능 ID → API ID)
-4. ERD를 작성한다.
-5. 테이블 명세를 작성한다.
-6. 상태 모델을 작성한다. (엔티티별 상태 전이)
-7. 에러 명세를 작성한다. (에러 코드 체계)
-8. 기능 ID → 화면 ID → API ID → 테이블 → 상태 → 에러 코드 연결을 확인한다.
-9. 제품 오너에게 Gate 7. Contract Approval을 요청한다.
+4. 각 API 엔드포인트에 관련 SEQ ID를 연결한다.
+5. ERD를 작성한다.
+6. 테이블 명세를 작성한다.
+7. 상태 모델을 작성한다. (엔티티별 상태 전이)
+8. 에러 명세를 작성한다. (에러 코드 체계)
+9. 기능 ID → 화면 ID → SEQ ID → API ID → 테이블 → 상태 → 에러 코드 연결을 확인한다.
+10. 제품 오너에게 Gate 7. Contract Approval을 요청한다.
 
 ## 5. 핵심 연결
 
 ```text
 기능 ID
 → 화면 ID
+→ SEQ ID
 → API ID
 → 테이블
 → 상태
@@ -57,3 +60,4 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - 소스 코드를 작성하지 않는다.
 - 기능명세 없이 API를 설계하지 않는다.
 - 화면정의 없이 에러 메시지를 정의하지 않는다.
+- 도메인별 시퀀스 없이 API 계약을 완료 처리하지 않는다.

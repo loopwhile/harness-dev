@@ -16,6 +16,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - docs/03_requirements/functional_spec/<domain>.md
 - docs/02_product/prd.md
 - docs/02_product/scope.md
+- docs/06_design/DESIGN.md (있는 경우)
 
 ## 3. 출력
 
@@ -31,9 +32,11 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 2. `.agents/templates/screen_definition.template.md`를 참고한다.
 3. 사용자 흐름(user_flows.md)을 작성한다.
 4. 화면 목록을 도출하고 화면 ID를 부여한다.
-5. 도메인별 화면정의 파일을 작성한다.
-6. 각 화면에서 기능 ID와의 연결을 명시한다.
-7. 제품 오너에게 Gate 3. Screen Definition Approval을 요청한다.
+5. 프론트엔드가 여러 개인 경우 대상 Frontend ID를 명시한다.
+6. 도메인별 화면정의 파일을 작성한다.
+7. 각 화면에서 기능 ID와의 연결을 명시한다.
+8. DESIGN.md가 있으면 충돌하는 부분을 확인한다.
+9. 제품 오너에게 Gate 3. Screen Definition Approval을 요청한다.
 
 ## 5. 각 화면 필수 항목
 
@@ -42,6 +45,8 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - URL/path
 - 접근 권한
 - 화면 목적
+- Frontend ID (프론트엔드가 여러 개인 경우)
+- Design Reference (관련 DESIGN.md 경로)
 - 표시 컴포넌트
 - 입력 필드 (이름, 타입, 필수 여부, 유효성 규칙)
 - 버튼/액션

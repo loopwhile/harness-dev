@@ -17,6 +17,8 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - docs/03_requirements/functional_spec/<domain>.md
 - docs/03_requirements/screen_definition/<domain>.md
 - docs/03_requirements/user_flows.md
+- docs/06_design/DESIGN.md (있는 경우)
+- docs/06_design/frontends/<frontend>/DESIGN.md (있는 경우)
 - docs/06_design/design_direction.md (있는 경우)
 
 ## 3. 출력
@@ -29,10 +31,12 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 1. 화면정의서를 읽는다.
 2. `.agents/templates/stitch_prompt_pack.template.md`를 참고한다.
-3. 화면별 Stitch 프롬프트를 생성한다.
-4. 디자인 방향(있으면)을 프롬프트에 반영한다.
-5. 도메인별 Stitch Prompt Pack을 작성한다.
-6. 제품 오너에게 Gate 4. Stitch Prompt Approval을 요청한다.
+3. DESIGN.md가 있으면 디자인 원칙/톤/색상/컴포넌트 가이드라인을 프롬프트에 반영한다.
+4. 프론트엔드별 DESIGN.md가 있으면 함께 참조한다.
+5. 화면별 Stitch 프롬프트를 생성한다.
+6. 디자인 방향(있으면)을 프롬프트에 반영한다.
+7. 도메인별 Stitch Prompt Pack을 작성한다.
+8. 제품 오너에게 Gate 4. Stitch Prompt Approval을 요청한다.
 
 ## 5. 프롬프트 구조
 

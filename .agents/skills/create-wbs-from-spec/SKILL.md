@@ -19,8 +19,11 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - docs/03_requirements/screen_definition/<domain>.md
 - docs/05_contracts/api/api_contract.md
 - docs/05_contracts/data/erd.md
+- docs/06_design/DESIGN.md (있는 경우)
 - docs/06_design/ui_handoff/<domain>.md (있는 경우)
 - docs/04_architecture/system_architecture.md
+- docs/04_architecture/architecture_diagrams.md (있는 경우)
+- docs/04_architecture/sequence_diagrams.md (있는 경우)
 
 ## 3. 출력
 
@@ -79,7 +82,7 @@ WBS-01-003 비밀번호 재설정
 TASK를 생성할 때 다음 연결이 존재하는지 확인한다.
 
 ```text
-기능 ID → 화면 ID → API ID → 테이블 → TASK
+기능 ID → 화면 ID → SEQ ID → API ID → 테이블 → TASK
 ```
 
 연결이 없으면 명세 보강 TASK를 먼저 배치한다.
@@ -90,3 +93,4 @@ TASK를 생성할 때 다음 연결이 존재하는지 확인한다.
 - 기능명세 없이 TASK를 만들지 않는다.
 - 화면정의 없이 프론트엔드 TASK를 만들지 않는다.
 - API/DB 명세 없이 백엔드 TASK를 만들지 않는다.
+- DESIGN.md 없이 프론트엔드 구현 TASK를 만들지 않는다.

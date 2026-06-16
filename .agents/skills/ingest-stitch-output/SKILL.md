@@ -17,6 +17,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - Stitch export 코드 (참고용)
 - 사용자 승인/수정 코멘트
 - docs/03_requirements/screen_definition/<domain>.md
+- docs/06_design/DESIGN.md (있는 경우)
 
 ## 3. 출력
 
@@ -25,6 +26,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 | Stitch 결과 정리 | docs/06_design/stitch/results/<domain>.md |
 | UI handoff | docs/06_design/ui_handoff/<domain>.md |
 | 화면정의 보정 제안 | docs/03_requirements/screen_definition/<domain>.md 갱신 제안 |
+| DESIGN.md 반영 제안 | docs/06_design/DESIGN.md 갱신 제안 |
 
 ## 4. 절차
 
@@ -34,9 +36,11 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 4. 결과에서 화면 구조, 컴포넌트, 상태를 추출한다.
 5. 화면정의서와 비교한다.
 6. 차이점을 정리한다.
-7. UI handoff 문서를 작성한다.
-8. 필요시 화면정의 보정을 제안한다.
-9. 제품 오너에게 Gate 5. Stitch Result Approval과 Gate 6. UI Handoff Approval을 요청한다.
+7. Stitch 결과에서 DESIGN.md 반영 후보를 추출한다. (신규 디자인 패턴, 컴포넌트, 레이아웃 원칙)
+8. UI handoff 문서를 작성한다.
+9. 필요시 화면정의 보정을 제안한다.
+10. 필요시 DESIGN.md 갱신을 제안한다.
+11. 제품 오너에게 Gate 5. Stitch Result Approval과 Gate 6. UI Handoff Approval을 요청한다.
 
 ## 5. 검증 항목
 
@@ -55,6 +59,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 UI 구조 참고 ✅
 컴포넌트 설계 참고 ✅
 프론트 TASK 입력 ✅
+DESIGN.md 반영 후보 ✅
 ```
 
 ## 7. 금지
