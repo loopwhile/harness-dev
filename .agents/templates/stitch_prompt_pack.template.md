@@ -8,6 +8,7 @@
 | Created At | YYYY-MM-DD |
 | Status | DRAFT / APPROVED |
 | 디자인 방향 참조 | docs/06_design/design_direction.md |
+| DESIGN.md 참조 | docs/06_design/DESIGN.md |
 
 ## 프롬프트 목록
 

@@ -9,6 +9,7 @@
 | Status | DRAFT / APPROVED |
 | 참조 화면정의 | docs/03_requirements/screen_definition/<domain>.md |
 | 참조 Stitch 결과 | docs/06_design/stitch/results/<domain>.md |
+| 참조 DESIGN.md | docs/06_design/DESIGN.md |
 
 ## 화면별 Handoff
 

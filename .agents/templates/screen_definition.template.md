@@ -28,6 +28,8 @@
 | URL/Path |  |
 | 접근 권한 |  |
 | 화면 목적 |  |
+| Frontend ID |  |
+| Design Reference |  |
 
 ### 표시 컴포넌트
 

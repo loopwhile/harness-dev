@@ -31,8 +31,11 @@
 | Functional Spec | docs/03_requirements/functional_spec/<domain>.md | No |
 | Screen Definition | docs/03_requirements/screen_definition/<domain>.md | No |
 | User Flows | docs/03_requirements/user_flows.md | No |
+| Design System | docs/06_design/DESIGN.md | No |
+| Frontend Design | docs/06_design/frontends/<frontend>/DESIGN.md | No |
 | UI Handoff | docs/06_design/ui_handoff/<domain>.md | No |
 | Architecture | docs/04_architecture/system_architecture.md | No |
+| Architecture Diagrams | docs/04_architecture/architecture_diagrams.md | No |
 | Sequence Diagrams | docs/04_architecture/sequence_diagrams.md | No |
 | API Contract | docs/05_contracts/api/api_contract.md | No |
 | Table Spec | docs/05_contracts/data/table_spec.md | No |
