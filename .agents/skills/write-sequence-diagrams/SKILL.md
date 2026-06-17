@@ -34,7 +34,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 1. 기능명세와 화면정의를 읽는다.
 2. 시스템 아키텍처와 모듈 경계 문서를 읽는다.
-3. `.agents/templates/architecture_spec.template.md`를 참고한다.
+3. `.agents/templates/sequence_diagrams.template.md`를 참고한다.
 4. 도메인별 핵심 흐름을 식별한다.
 5. 각 흐름에 시퀀스 ID를 부여한다 (SEQ-{DOMAIN}-{SEQ}).
 6. 각 흐름의 Mermaid 시퀀스 다이어그램을 작성한다.
