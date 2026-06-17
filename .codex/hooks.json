@@ -6,7 +6,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "python3 .codex/hooks/pre_tool_use_policy.py",
+                        "command": "python .codex/hooks/pre_tool_use_policy.py",
                         "statusMessage": "TASK 경계와 위험 명령 정책을 확인하는 중"
                     }
                 ]
@@ -18,7 +18,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "python3 .codex/hooks/post_tool_use_review.py",
+                        "command": "python .codex/hooks/post_tool_use_review.py",
                         "statusMessage": "명령 실행 결과와 저장소 상태를 확인하는 중"
                     }
                 ]
@@ -29,7 +29,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "python3 .codex/hooks/stop_task_guard.py",
+                        "command": "python .codex/hooks/stop_task_guard.py",
                         "statusMessage": "TASK 완료 조건을 확인하는 중",
                         "timeout": 30
                     }

@@ -2,7 +2,7 @@ name = "spec-reviewer"
 description = "Mode 2에서 명세 누락 여부를 검수하고 개발 착수 가능 여부를 판정하는 명세 리뷰 에이전트다."
 model = "o3"
 model_reasoning_effort = "high"
-sandbox_mode = "workspace-read-only"
+sandbox_mode = "read-only"
 
 developer_instructions = """
 당신은 이 저장소의 명세 리뷰 에이전트(spec-reviewer)다.
