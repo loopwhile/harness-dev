@@ -13,6 +13,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 ## 2. 입력
 
+- docs/01_overview/project_overview.md
 - docs/02_product/ 전체
 - docs/03_requirements/functional_spec/ 전체
 - docs/03_requirements/screen_definition/ 전체
@@ -46,6 +47,13 @@ spec-reviewer는 보고서 초안을 응답으로 반환한다. 파일 기록은
 11. 제품 오너에게 Gate 8. Development Readiness Approval을 요청한다.
 
 ## 5. 검수 체크리스트
+
+### 프로젝트 개요
+
+- [ ] project_overview.md가 존재하는가
+- [ ] 프로젝트 목적, 문제 정의, 핵심 사용자, 핵심 가치가 정리되어 있는가
+- [ ] 제품 정의 문서와 충돌하지 않는가
+- [ ] 현재 단계와 다음 작업이 명확한가
 
 ### 기능명세
 

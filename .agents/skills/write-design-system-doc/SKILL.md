@@ -26,6 +26,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 |---|---|
 | 전역 디자인 기준 | docs/06_design/DESIGN.md |
 | 프론트엔드별 디자인 기준 | docs/06_design/frontends/<frontend>/DESIGN.md |
+| 디자인 방향 (선택) | docs/06_design/design_direction.md |
 
 ## 4. 절차
 
@@ -36,6 +37,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 5. 프론트엔드가 여러 개인 경우 각 프론트엔드별 DESIGN.md를 작성한다.
 6. Stitch 결과가 있으면 디자인 토큰, 레이아웃 패턴, 컴포넌트 패턴을 추출하여 반영한다.
 7. 화면정의서와 DESIGN.md 간 일관성을 확인한다.
+8. 사용자 디자인 선호 또는 Stitch 이전 방향성이 필요한 경우 design_direction.md를 작성한다.
 
 ## 5. 전역 DESIGN.md 필수 내용
 

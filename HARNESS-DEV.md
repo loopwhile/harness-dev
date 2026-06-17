@@ -37,22 +37,56 @@ Mode 2에서는 소스 코드를 구현하지 않는다.
 
 | 순서 | 사용할 스킬 | 완성 문서 |
 |---|---|---|
+| 0 | `write-project-overview` | `docs/01_overview/project_overview.md` |
 | 1 | `plan-commercial-v1` | `docs/02_product/product_brief.md`, `prd.md`, `scope.md`, `business_rules.md` |
-| 2 | `write-functional-spec` | `docs/03_requirements/functional_spec/<domain>.md` |
-| 3 | `write-screen-definition` | `docs/03_requirements/screen_definition/<domain>.md`, `user_flows.md` |
-| 4 | `write-design-system-doc` | `docs/06_design/DESIGN.md`, `docs/06_design/frontends/<frontend>/DESIGN.md` |
+| 2 | `write-functional-spec` | `docs/03_requirements/functional_spec/_index.md`, `functional_spec/<domain>.md`, `acceptance_criteria.md` |
+| 3 | `write-screen-definition` | `docs/03_requirements/screen_definition/_index.md`, `screen_definition/<domain>.md`, `user_flows.md` |
+| 4 | `write-design-system-doc` | `docs/06_design/DESIGN.md`, `docs/06_design/frontends/<frontend>/DESIGN.md`, `docs/06_design/design_direction.md` 선택 |
 | 5 | `prepare-stitch-prompt` | `docs/06_design/stitch/prompts/<domain>.md` |
 | 6 | `ingest-stitch-output` | `docs/06_design/stitch/results/<domain>.md`, `docs/06_design/ui_handoff/<domain>.md` |
-| 7 | `write-architecture-diagrams` | `docs/04_architecture/architecture_diagrams.md`, `sequence_diagrams.md` |
-| 8 | `write-data-api-contracts` | `api_contract.md`, `erd.md`, `table_spec.md`, `state_model.md`, `error_spec.md` |
-| 9 | `create-wbs-from-spec` | `docs/09_pm/wbs/`, `ops/tasks/` |
-| 10 | `review-spec-completeness` | `spec_gap_report.md`, `release_readiness_for_development.md` |
+| 7 | `write-system-architecture` | `docs/04_architecture/system_architecture.md`, `module_boundaries.md`, `runtime_flow.md` |
+| 8 | `write-architecture-diagrams` | `docs/04_architecture/architecture_diagrams.md` |
+| 9 | `write-sequence-diagrams` | `docs/04_architecture/sequence_diagrams.md` |
+| 10 | `write-data-api-contracts` | `docs/05_contracts/api/api_contract.md`, `docs/05_contracts/data/erd.md`, `table_spec.md`, `state_model.md`, `error_spec.md` |
+| 11 | `create-wbs-from-spec` | `docs/09_pm/wbs/`, `ops/tasks/` |
+| 12 | `review-spec-completeness` | `docs/09_pm/spec_gap_report.md`, `docs/09_pm/release_readiness_for_development.md` |
 
 ---
 
 ## 4. Mode 2 단계별 사용 프롬프트
 
 아래 프롬프트를 순서대로 사용한다.
+
+---
+
+### 4.0 프로젝트 개요 작성
+
+사용 스킬:
+
+```text
+write-project-overview
+```
+
+프롬프트:
+
+```text
+Mode 2. Planning / Specification Mode로 진행한다.
+
+.agents/skills/write-project-overview/SKILL.md를 사용해서
+프로젝트 개요 문서를 작성해줘.
+
+출력 문서:
+- docs/01_overview/project_overview.md
+
+기준:
+- 제품 상세 PRD로 들어가기 전의 상위 개요만 작성할 것
+- 프로젝트 목적, 문제 정의, 핵심 사용자, 핵심 가치, 현재 상태를 정리할 것
+- 기술 스택은 확정/후보 상태를 구분할 것
+- 이후 plan-commercial-v1이 참고할 수 있게 작성할 것
+
+서비스 아이디어:
+[여기에 서비스 설명 작성]
+```
 
 ---
 
@@ -84,6 +118,7 @@ Mode 2. Planning / Specification Mode로 진행한다.
 - Enterprise 문서처럼 과설계하지 말 것
 - Lean Commercial v1 기준으로 작성할 것
 - 내가 제품 오너이므로 필요한 결정사항은 별도로 정리할 것
+- docs/01_overview/project_overview.md가 있으면 참고할 것
 
 서비스 아이디어:
 [여기에 서비스 설명 작성]
@@ -114,7 +149,9 @@ Mode 2. Planning / Specification Mode로 진행한다.
 - docs/02_product/business_rules.md
 
 출력 문서:
+- docs/03_requirements/functional_spec/_index.md
 - docs/03_requirements/functional_spec/<domain>.md
+- docs/03_requirements/acceptance_criteria.md
 
 각 기능에는 반드시 다음을 포함해줘.
 
@@ -162,6 +199,7 @@ Mode 2. Planning / Specification Mode로 진행한다.
 - docs/03_requirements/user_flows.md
 
 출력 문서:
+- docs/03_requirements/screen_definition/_index.md
 - docs/03_requirements/screen_definition/<domain>.md
 - docs/03_requirements/user_flows.md
 
@@ -219,6 +257,7 @@ Mode 2. Planning / Specification Mode로 진행한다.
 출력 문서:
 - docs/06_design/DESIGN.md
 - docs/06_design/frontends/<frontend>/DESIGN.md
+- docs/06_design/design_direction.md (디자인 선호/방향성이 필요한 경우)
 
 포함 항목:
 - Design Principles
@@ -327,7 +366,51 @@ Stitch 결과:
 
 ---
 
-### 4.7 아키텍처 다이어그램과 시퀀스 작성
+### 4.7 시스템 아키텍처 작성
+
+사용 스킬:
+
+```text
+write-system-architecture
+```
+
+프롬프트:
+
+```text
+Mode 2. Planning / Specification Mode로 진행한다.
+
+.agents/skills/write-system-architecture/SKILL.md를 사용해서
+시스템 아키텍처, 모듈 경계, 런타임 흐름 문서를 작성해줘.
+
+입력 문서:
+- docs/01_overview/project_overview.md
+- docs/02_product/product_brief.md
+- docs/02_product/prd.md
+- docs/03_requirements/functional_spec/
+- docs/03_requirements/screen_definition/
+- docs/03_requirements/user_flows.md
+- docs/06_design/DESIGN.md 있으면 참고
+
+출력 문서:
+- docs/04_architecture/system_architecture.md
+- docs/04_architecture/module_boundaries.md
+- docs/04_architecture/runtime_flow.md
+
+포함 항목:
+- 기술 스택
+- 시스템 구성도
+- 배포 구조
+- 외부 연동
+- 보안 기준
+- 모듈 목록과 의존
+- 요청 처리 흐름
+- 인증/인가 흐름
+- 에러 처리 흐름
+```
+
+---
+
+### 4.8 아키텍처 다이어그램 작성
 
 사용 스킬:
 
@@ -341,19 +424,17 @@ write-architecture-diagrams
 Mode 2. Planning / Specification Mode로 진행한다.
 
 .agents/skills/write-architecture-diagrams/SKILL.md를 사용해서
-아키텍처 다이어그램과 도메인별 시퀀스 다이어그램을 작성해줘.
+아키텍처 다이어그램을 작성해줘.
 
 입력 문서:
 - docs/04_architecture/system_architecture.md
-- docs/04_architecture/module_boundaries.md 있으면 참고
-- docs/04_architecture/runtime_flow.md 있으면 참고
+- docs/04_architecture/module_boundaries.md
+- docs/04_architecture/runtime_flow.md
 - docs/03_requirements/functional_spec/
 - docs/03_requirements/screen_definition/
-- docs/03_requirements/user_flows.md
 
 출력 문서:
 - docs/04_architecture/architecture_diagrams.md
-- docs/04_architecture/sequence_diagrams.md
 
 필수 다이어그램:
 - System Context Diagram
@@ -366,6 +447,37 @@ Mode 2. Planning / Specification Mode로 진행한다.
 - Security Boundary Diagram
 - Frontend App Architecture Diagram
 - Event / Async Flow Diagram
+```
+
+---
+
+### 4.9 시퀀스 다이어그램 작성
+
+사용 스킬:
+
+```text
+write-sequence-diagrams
+```
+
+프롬프트:
+
+```text
+Mode 2. Planning / Specification Mode로 진행한다.
+
+.agents/skills/write-sequence-diagrams/SKILL.md를 사용해서
+도메인별 시퀀스 다이어그램을 작성해줘.
+
+입력 문서:
+- docs/03_requirements/functional_spec/
+- docs/03_requirements/screen_definition/
+- docs/03_requirements/user_flows.md
+- docs/04_architecture/system_architecture.md
+- docs/04_architecture/module_boundaries.md
+- docs/04_architecture/architecture_diagrams.md
+- docs/05_contracts/api/api_contract.md 있으면 참고
+
+출력 문서:
+- docs/04_architecture/sequence_diagrams.md
 
 시퀀스는 대표 하나만 만들지 말고,
 도메인별 핵심 흐름을 SEQ ID 기준으로 작성해줘.
@@ -376,7 +488,7 @@ SEQ-{DOMAIN}-{SEQ}
 
 ---
 
-### 4.8 API/DB/상태/에러 계약 작성
+### 4.10 API/DB/상태/에러 계약 작성
 
 사용 스킬:
 
@@ -422,7 +534,7 @@ API/DB/상태/에러 계약 문서를 작성해줘.
 
 ---
 
-### 4.9 WBS/TASK 생성
+### 4.11 WBS/TASK 생성
 
 사용 스킬:
 
@@ -439,6 +551,7 @@ Mode 2. Planning / Specification Mode로 진행한다.
 완성된 명세 문서를 기반으로 WBS와 TASK를 생성해줘.
 
 입력 문서:
+- docs/01_overview/project_overview.md
 - docs/03_requirements/functional_spec/
 - docs/03_requirements/screen_definition/
 - docs/05_contracts/api/api_contract.md
@@ -468,7 +581,7 @@ Mode 2. Planning / Specification Mode로 진행한다.
 
 ---
 
-### 4.10 개발 착수 가능성 검토
+### 4.12 개발 착수 가능성 검토
 
 사용 스킬:
 
@@ -485,6 +598,7 @@ Mode 2. Planning / Specification Mode로 진행한다.
 현재 프로젝트가 개발 착수 가능한 상태인지 검토해줘.
 
 검토 대상:
+- 프로젝트 개요
 - 제품 정의
 - 기능명세
 - 화면정의
@@ -492,6 +606,9 @@ Mode 2. Planning / Specification Mode로 진행한다.
 - 프론트엔드별 DESIGN.md
 - Stitch 결과
 - UI handoff
+- 시스템 아키텍처
+- 모듈 경계
+- 런타임 흐름
 - 아키텍처 다이어그램
 - 도메인별 시퀀스 다이어그램
 - API 계약
@@ -526,11 +643,15 @@ spec-reviewer는 read-only 검수자이므로,
 Mode 3 개발 단계로 넘어가기 전에 최소한 아래 문서가 있어야 한다.
 
 ```text
+- 프로젝트 개요
 - 기능명세
 - 화면정의
 - DESIGN.md
 - 프론트엔드별 DESIGN.md
 - UI handoff
+- 시스템 아키텍처
+- 모듈 경계
+- 런타임 흐름
 - 아키텍처 다이어그램
 - 도메인별 시퀀스 다이어그램
 - API 계약
@@ -676,12 +797,16 @@ TASK 파일의 Source Context를 기준으로 필요한 문서만 읽는다.
 대표 문서:
 
 ```text
+- docs/01_overview/project_overview.md
 - docs/09_pm/wbs/wbs_XX_<domain>.md
 - docs/03_requirements/functional_spec/<domain>.md
 - docs/03_requirements/screen_definition/<domain>.md
 - docs/06_design/DESIGN.md
 - docs/06_design/frontends/<frontend>/DESIGN.md
 - docs/06_design/ui_handoff/<domain>.md
+- docs/04_architecture/system_architecture.md
+- docs/04_architecture/module_boundaries.md
+- docs/04_architecture/runtime_flow.md
 - docs/04_architecture/architecture_diagrams.md
 - docs/04_architecture/sequence_diagrams.md
 - docs/05_contracts/api/api_contract.md
@@ -704,6 +829,7 @@ TASK 파일의 Source Context를 기준으로 필요한 문서만 읽는다.
 - UI handoff 없이 프론트엔드 구현 TASK를 만들지 않는다.
 - 도메인별 시퀀스 없이 API 계약을 완료하지 않는다.
 - 아키텍처 다이어그램 없이 아키텍처 문서를 완료하지 않는다.
+- 텍스트 아키텍처 없이 아키텍처 다이어그램을 작성하지 않는다.
 - API/DB 명세 없이 백엔드 TASK를 만들지 않는다.
 - Stitch 결과 코드를 프로덕션 코드로 바로 사용하지 않는다.
 - Mode 3에서 forbidden files를 수정하지 않는다.
@@ -716,13 +842,16 @@ TASK 파일의 Source Context를 기준으로 필요한 문서만 읽는다.
 기획/설계:
 
 ```text
-plan-commercial-v1
+write-project-overview
+→ plan-commercial-v1
 → write-functional-spec
 → write-screen-definition
 → write-design-system-doc
 → prepare-stitch-prompt
 → ingest-stitch-output
+→ write-system-architecture
 → write-architecture-diagrams
+→ write-sequence-diagrams
 → write-data-api-contracts
 → create-wbs-from-spec
 → review-spec-completeness

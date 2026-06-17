@@ -18,7 +18,9 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 - docs/03_requirements/functional_spec/<domain>.md
 - docs/03_requirements/screen_definition/<domain>.md
 - docs/03_requirements/user_flows.md
-- docs/04_architecture/system_architecture.md (있는 경우)
+- docs/04_architecture/system_architecture.md
+- docs/04_architecture/module_boundaries.md (있는 경우)
+- docs/04_architecture/runtime_flow.md (있는 경우)
 - docs/04_architecture/architecture_diagrams.md (있는 경우)
 - docs/05_contracts/api/api_contract.md (있는 경우)
 
@@ -27,21 +29,16 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 | 산출물 | 경로 |
 |---|---|
 | 시퀀스 다이어그램 | docs/04_architecture/sequence_diagrams.md |
-| 시스템 아키텍처 (보강) | docs/04_architecture/system_architecture.md |
-| 모듈 경계 | docs/04_architecture/module_boundaries.md |
-| 런타임 흐름 | docs/04_architecture/runtime_flow.md |
 
 ## 4. 절차
 
 1. 기능명세와 화면정의를 읽는다.
-2. `.agents/templates/architecture_spec.template.md`를 참고한다.
-3. 도메인별 핵심 흐름을 식별한다.
-4. 각 흐름에 시퀀스 ID를 부여한다 (SEQ-{DOMAIN}-{SEQ}).
-5. 각 흐름의 Mermaid 시퀀스 다이어그램을 작성한다.
-6. API 계약이 있으면 시퀀스와 API ID를 연결한다.
-7. 시스템 아키텍처를 보강한다. (없으면 초안 작성)
-8. 모듈 경계를 정의한다.
-9. 런타임 흐름을 정리한다.
+2. 시스템 아키텍처와 모듈 경계 문서를 읽는다.
+3. `.agents/templates/architecture_spec.template.md`를 참고한다.
+4. 도메인별 핵심 흐름을 식별한다.
+5. 각 흐름에 시퀀스 ID를 부여한다 (SEQ-{DOMAIN}-{SEQ}).
+6. 각 흐름의 Mermaid 시퀀스 다이어그램을 작성한다.
+7. API 계약이 있으면 시퀀스와 API ID를 연결한다.
 
 ## 5. 반드시 작성하는 흐름
 

@@ -15,6 +15,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 ## 2. 입력
 
+- docs/01_overview/project_overview.md (있는 경우)
 - docs/03_requirements/functional_spec/<domain>.md
 - docs/03_requirements/screen_definition/<domain>.md
 - docs/05_contracts/api/api_contract.md

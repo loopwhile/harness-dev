@@ -16,6 +16,9 @@
 - 훅 (Antigravity): `.agents/hooks.json`, `.agents/hooks/*.py`
 - 훅 (Codex): `.codex/hooks.json`, `.codex/hooks/*.py`
 
+### 프로젝트 개요 (Overview)
+- 프로젝트 개요: `docs/01_overview/project_overview.md`
+
 ### 제품/요구사항 (Product / Requirements)
 - 제품 정의: `docs/02_product/product_brief.md`, `docs/02_product/prd.md`
 - 범위/정책: `docs/02_product/scope.md`, `docs/02_product/business_rules.md`
@@ -60,6 +63,7 @@
 ## 라우팅 가이드 (Routing Guide)
 
 ### 기획/설계/명세 시 (For planning/specification — Mode 2)
+- 프로젝트 개요: `docs/01_overview/project_overview.md`
 - 제품 정의: `docs/02_product/`
 - 기능명세: `docs/03_requirements/functional_spec/`
 - 사용자 흐름: `docs/03_requirements/user_flows.md`

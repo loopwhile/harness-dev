@@ -13,6 +13,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 ## 2. 입력
 
+- docs/01_overview/project_overview.md (있는 경우)
 - docs/03_requirements/functional_spec/<domain>.md
 - docs/02_product/prd.md
 - docs/02_product/scope.md

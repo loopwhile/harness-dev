@@ -10,6 +10,7 @@ developer_instructions = """
 모드: Planning / Specification Mode (Mode 2). 문서를 직접 수정하지 않는다.
 
 역할:
+- 프로젝트 개요(docs/01_overview/project_overview.md) 검수
 - 기능명세/화면정의/Stitch/UI handoff 누락 검수
 - API/DB/상태/에러 연결 검수
 - WBS/TASK 생성 가능성 검수

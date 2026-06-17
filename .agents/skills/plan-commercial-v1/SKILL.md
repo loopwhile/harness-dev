@@ -13,6 +13,7 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 ## 2. 입력
 
+- docs/01_overview/project_overview.md (있는 경우)
 - 사용자 아이디어 또는 비전
 - 타깃 사용자
 - 수익모델
@@ -31,13 +32,14 @@ Mode 2. Planning / Specification Mode에서 사용한다.
 
 ## 4. 절차
 
-1. 사용자 입력을 정리한다.
-2. `.agents/templates/product_brief.template.md`를 참고한다.
-3. product_brief.md를 작성한다. (서비스 목적, 타깃 사용자, 핵심 가치)
-4. prd.md를 작성한다. (기능 목록, 사용자 시나리오, 기술 제약)
-5. scope.md를 작성한다. (v1 포함 범위, 제외 범위, 향후 확장)
-6. business_rules.md를 작성한다. (운영 정책, 결제 규칙, 취소 정책 등)
-7. 제품 오너에게 Gate 1. Product Scope Approval을 요청한다.
+1. docs/01_overview/project_overview.md가 있으면 먼저 읽는다.
+2. 사용자 입력과 project_overview.md를 비교해 제품 정의의 기준 컨텍스트를 확정한다.
+3. `.agents/templates/product_brief.template.md`를 참고한다.
+4. product_brief.md를 작성한다. (서비스 목적, 타깃 사용자, 핵심 가치)
+5. prd.md를 작성한다. (기능 목록, 사용자 시나리오, 기술 제약)
+6. scope.md를 작성한다. (v1 포함 범위, 제외 범위, 향후 확장)
+7. business_rules.md를 작성한다. (운영 정책, 결제 규칙, 취소 정책 등)
+8. 제품 오너에게 Gate 1. Product Scope Approval을 요청한다.
 
 ## 5. 핵심 기준
 
