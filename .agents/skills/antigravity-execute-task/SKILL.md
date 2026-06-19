@@ -143,16 +143,18 @@ evaluator
 recorder
 ```
 
-작업 규모가 작으면 모든 역할을 반드시 별도 subagent로 나누지 않아도 된다.
+Normal TASK (Mode 3A)에서 implementer, verifier, reviewer, recorder는 각각 별도 subagent로 실행한다.
 
-그러나 다음 역할의 책임은 반드시 분리해서 수행해야 한다.
+EVAL TASK (Mode 3B)에서 verifier, evaluator, recorder는 각각 별도 subagent로 실행한다.
 
-- 구현 책임
-- 검증 책임
-- 리뷰 책임
-- 평가 책임 (EVAL TASK)
-- 기록 책임
-- 최종 완료 판단 책임
+다음은 금지한다.
+
+- 서로 다른 역할을 하나의 subagent로 병합
+- 메인 orchestrator가 역할을 대행
+- TASK가 작다는 이유로 subagent 생략
+- spawn 실패 후 단일 에이전트 방식으로 계속 진행
+
+필수 subagent를 spawn할 수 없으면 단일 에이전트로 대체하지 않고 `BLOCKED`로 보고한다.
 
 ## 7. runtime subagent 역할 정의
 

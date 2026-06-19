@@ -29,6 +29,7 @@ developer_instructions = """
 - PASS
 - PASS_WITH_NOTES
 - FAIL
+- BLOCKED
 
 하드 룰:
 - 검증 실패 상태를 PASS 처리하지 않는다.
