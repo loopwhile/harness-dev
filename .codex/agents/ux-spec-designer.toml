@@ -1,6 +1,6 @@
 name = "ux-spec-designer"
 description = "Mode 2에서 사용자 흐름과 화면정의서를 작성하고 화면 ID와 기능 ID를 연결하는 UX 명세 에이전트다."
-model = "o3"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 
