@@ -1,7 +1,7 @@
 name = "business-analyst"
 description = "Mode 2에서 요구사항을 도메인별 기능명세로 분해하고 기능 ID 체계를 관리하는 비즈니스 분석 에이전트다."
 model = "gpt-5.6-terra"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
 developer_instructions = """
