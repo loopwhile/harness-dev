@@ -1,6 +1,6 @@
 name = "verifier"
 description = "TASK 구현 결과를 테스트, 린트, 빌드, acceptance criteria 기준으로 검증한다. EVAL TASK에서는 통합 검증을 담당한다."
-model = "gpt-5.5"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
