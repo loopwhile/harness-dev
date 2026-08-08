@@ -1,7 +1,7 @@
 name = "solution-architect"
 description = "Mode 2에서 시스템 아키텍처, 모듈 경계, 런타임 흐름, 시퀀스 다이어그램을 작성하는 아키텍처 에이전트다."
 model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
 developer_instructions = """
