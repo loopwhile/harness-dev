@@ -3,10 +3,10 @@
 # 이 파일은 프로젝트 로컬 Codex 설정이다.
 # 사용자 계정, 인증, 개인 환경 설정은 ~/.codex/config.toml에 둔다.
 #
-# Stage 3에서는 설정 스키마만 정리한다.
-# 모델 마이그레이션은 Stage 4에서 수행한다.
+# Stage 4에서는 GPT-5.5/o3 모델을 GPT-5.6 Terra로 호환성 마이그레이션한다.
+# 역할별 Sol/Terra/Luna 최적화는 Stage 5에서 수행한다.
 
-model = "gpt-5.5"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "high"
 
 approval_policy = "on-request"
@@ -19,7 +19,7 @@ hooks = true
 [agents]
 enabled = true
 max_concurrent_threads_per_session = 5
-default_subagent_model = "gpt-5.5"
+default_subagent_model = "gpt-5.6-terra"
 default_subagent_reasoning_effort = "high"
 interrupt_message = true
 
