@@ -10,7 +10,7 @@
 - 프로젝트 헌법: `AGENTS.md`
 - 에이전트 스킬: `.agents/skills/*/SKILL.md`
 - 에이전트 규칙: `.agents/rules/*.md`
-- 에이전트 정의 (Antigravity): `.agents/agents/*/agent.json`
+- 에이전트 정의 (Antigravity): `.agents/agents/*/agent.md`
 - 에이전트 정의 (Codex): `.codex/agents/*.toml`
 - 기획/설계 템플릿: `.agents/templates/*.template.md`
 - 훅 (Antigravity): `.agents/hooks.json`, `.agents/hooks/*.py`

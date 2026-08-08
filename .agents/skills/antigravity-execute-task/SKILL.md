@@ -1,25 +1,17 @@
 ---
 name: antigravity-execute-task
-description: Antigravity CLI에서 ops/tasks/TASK-xxx.md 하나를 기준으로 작업을 실행한다. 런타임 subagent를 동적으로 정의해 계획, 구현, 검증, 리뷰, 기록, 커밋 흐름을 통제한다.
+description: Antigravity CLI에서 ops/tasks/TASK-xxx.md 하나를 기준으로 네이티브 custom subagent를 호출해 구현, 검증, 리뷰, 평가, 기록, 커밋 흐름을 통제한다.
 ---
 
 # Antigravity Execute Task Skill
 
 ## 1. 목적
 
-이 스킬은 Antigravity CLI에서 `ops/tasks/TASK-xxx.md` 하나를 기준으로 작업을 실행하기 위한 절차다.
-
-이 스킬이 호출되면 **TASK Execution Mode**가 활성화된다.
+이 스킬은 Antigravity CLI에서 `ops/tasks/TASK-xxx.md` 하나를 기준으로 TASK Execution Mode를 실행하기 위한 절차다.
 
 이 저장소의 실제 작업 단위는 Antigravity 내부 artifact가 아니라 반드시 `ops/tasks/TASK-xxx.md`다.
 
-Antigravity가 생성하는 다음 artifact는 보조 산출물로만 사용한다.
-
-- `task.md`
-- `implementation_plan.md`
-- `walkthrough.md`
-- Antigravity 내부 task list
-- Antigravity brain 내부 파일
+Antigravity가 생성하는 `task.md`, `implementation_plan.md`, `walkthrough.md`, 내부 task list, brain 파일은 보조 산출물로만 취급한다.
 
 최종 실행 기록은 반드시 다음 경로에 남긴다.
 
@@ -27,21 +19,27 @@ Antigravity가 생성하는 다음 artifact는 보조 산출물로만 사용한�
 ops/logs/TASK-xxx.log.md
 ```
 
-## 2. 반드시 따라야 할 기준 파일
+## 2. 진실 공급원
 
-작업을 시작하기 전에 반드시 아래 파일과 디렉터리를 확인한다.
+작업을 시작하기 전에 다음을 확인한다.
 
 ```text
 AGENTS.md
 .agents/rules/**
+.agents/agents/<role>/agent.md
 ops/tasks/TASK-xxx.md
 ```
 
-`AGENTS.md`는 프로젝트 공통 헌법이다.
+역할별 시스템 프롬프트와 도구 권한의 진실 공급원은 `.agents/agents/<role>/agent.md`다.
 
-`.agents/rules/**`는 Antigravity workspace rule이다.
+Antigravity는 다음 경로의 custom agent를 자동 탐색한다.
 
-`ops/tasks/TASK-xxx.md`는 해당 작업의 실제 계약서다.
+```text
+.agents/agents/<name>.md
+.agents/agents/<name>/agent.md
+```
+
+이 저장소는 두 번째 형식을 표준으로 사용한다.
 
 ## 3. 기본 원칙
 
@@ -51,41 +49,28 @@ ops/tasks/TASK-xxx.md
 - TASK의 `allowed files` 안에서만 수정한다.
 - TASK의 `forbidden files`는 절대 수정하지 않는다.
 - TASK가 명시적으로 허용하지 않으면 `docs/01_overview`부터 `docs/09_pm`까지 수정하지 않는다.
-- 관련 없는 리팩터링을 하지 않는다.
-- 관련 없는 포맷팅 변경을 하지 않는다.
-- 관련 없는 파일 이동 또는 이름 변경을 하지 않는다.
+- 관련 없는 리팩터링, 포맷팅, 파일 이동 또는 이름 변경을 하지 않는다.
 - 검증 없이 완료 처리하지 않는다.
-- 리뷰 없이 커밋하지 않는다. (Normal TASK)
+- Normal TASK는 리뷰 없이 커밋하지 않는다.
 - 실행 기록 없이 완료 처리하지 않는다.
 - 검증과 리뷰가 통과한 경우에만 커밋한다.
 
 ## 4. TASK 실행 중 사용자 승인 없이 허용하는 작업
 
-TASK의 allowed files 범위 안에서 아래 작업은 사용자에게 묻지 않고 진행한다.
+TASK의 allowed files 범위 안에서 다음 작업은 사용자에게 묻지 않고 진행한다.
 
-- TASK allowed files 내부 파일 생성
-- TASK allowed files 내부 파일 수정
-- TASK allowed files 내부 파일 삭제
-- TASK allowed files 내부 파일 이동/이름 변경
-- TASK allowed files 내부 디렉터리 생성
-- TASK allowed files 내부 디렉터리 정리
+- 파일 생성/수정/삭제/이동/이름 변경
+- 디렉터리 생성/정리
 - 테스트 파일 추가/수정/삭제
-- 검증 명령 실행
-- 빌드 명령 실행
-- 린트 명령 실행
-- 타입 체크 실행
-- git status
-- git diff
-- git add
-- git commit
-- git restore --staged
-- TASK 로그 작성/수정
+- 테스트/빌드/린트/타입 체크
+- `git status`, `git diff`, `git add`, `git commit`, `git restore --staged`
+- 해당 TASK의 실행 로그 작성/수정
 
 ## 5. 절대 금지 또는 사용자 승인 필요
 
 - 프로젝트 루트 밖 파일 생성/수정/삭제
 - 프로젝트 루트 전체 삭제
-- .git 디렉터리 삭제
+- `.git` 디렉터리 삭제
 - `rm -rf /`, `rm -rf .`, `rm -rf ..`, `rm -rf ./*`
 - `git clean -fdx`
 - `git reset --hard`
@@ -94,48 +79,76 @@ TASK의 allowed files 범위 안에서 아래 작업은 사용자에게 묻지 �
 - DB drop, 테이블 drop
 - TASK allowed files 밖의 파일 변경
 
-## 6. Antigravity 런타임 subagent 운영 방식
+## 6. 네이티브 custom subagent 운영 방식
 
-Antigravity CLI는 `.agents/agents/*/agent.json` 파일을 서브에이전트 정의의 진실 공급원으로 사용한다.
+### 6.1 고정 역할
 
-메인 에이전트(orchestrator)는 TASK 실행 중 다음 절차로 runtime subagent를 정의하고 호출한다.
+TASK Execution Mode의 고정 역할은 다음 manifest를 사용한다.
 
-1. `.agents/agents/<role>/agent.json` 파일을 읽는다. (대상: implementer, verifier, reviewer, evaluator, recorder)
-2. `config.customAgent.systemPromptSections[0].content` 값을 시스템 프롬프트로 추출한다.
-3. `config.customAgent.toolNames` 배열을 확인하여 도구 권한을 결정한다.
-   - `write_to_file`, `replace_file_content`, `multi_replace_file_content` 중 하나라도 포함되면 `enable_write_tools = true`
-   - 포함되지 않으면 `enable_write_tools = false`
-4. `define_subagent`를 호출하여 런타임 서브에이전트를 등록한다.
-5. `invoke_subagent`로 해당 서브에이전트를 실행한다.
+| 역할 | manifest | mainAgent | subagent |
+|---|---|---:|---:|
+| orchestrator | `.agents/agents/orchestrator/agent.md` | true | false |
+| implementer | `.agents/agents/implementer/agent.md` | false | true |
+| verifier | `.agents/agents/verifier/agent.md` | false | true |
+| reviewer | `.agents/agents/reviewer/agent.md` | false | true |
+| evaluator | `.agents/agents/evaluator/agent.md` | false | true |
+| recorder | `.agents/agents/recorder/agent.md` | false | true |
 
-agent.json 파일이 없는 역할은 SKILL.md에 정의된 기본 역할 정의를 사용한다.
+메인/root thread는 orchestrator 책임을 수행하며 `orchestrator`를 subagent로 spawn하지 않는다.
 
-### 도구 권한 매핑
+### 6.2 실행 전 가용성 검사
 
-agent.json의 `toolNames`를 `define_subagent` 파라미터로 매핑한다.
-
-| agent.json toolNames 포함 여부 | define_subagent 파라미터 |
-|:---|:---|
-| `write_to_file` 또는 `replace_file_content` 포함 | `enable_write_tools = true` |
-| 위 도구 미포함 | `enable_write_tools = false` |
-| `search_web` 또는 `read_url_content` 포함 | 시스템 프롬프트에 웹 조사 허용 명시 |
-| MCP 도구 참조 | `enable_mcp_tools = true` |
-| `invoke_subagent` 또는 `define_subagent` 포함 | `enable_subagent_tools = true` |
-
-### 기본 역할별 도구 권한 (현재 agent.json 기준)
-
-| 역할 | write_tools | mcp_tools | subagent_tools |
-|:---|:---|:---|:---|
-| implementer | ✅ true | false | false |
-| verifier | ❌ false | false | false |
-| reviewer | ❌ false | false | false |
-| evaluator | ❌ false | false | false |
-| recorder | ✅ true | false | false |
-
-권장 runtime subagent 역할은 다음과 같다.
+Normal TASK에서는 다음 manifest가 모두 존재하고 `subagent: true`여야 한다.
 
 ```text
-orchestrator
+implementer
+verifier
+reviewer
+recorder
+```
+
+EVAL TASK에서는 다음 manifest가 모두 존재하고 `subagent: true`여야 한다.
+
+```text
+verifier
+evaluator
+recorder
+```
+
+manifest가 없거나 이름이 불일치하거나 필수 역할을 호출할 수 없으면 `BLOCKED`로 중단한다.
+
+### 6.3 invoke_subagent 호출 규칙
+
+고정 역할은 Antigravity의 `invoke_subagent`로 호출한다.
+
+호출 시 각 subagent spec은 다음 의미를 만족해야 한다.
+
+```text
+Role: 역할명
+TypeName: `.agents/agents/<role>/agent.md`의 name 값
+Prompt: TASK별 역할 작업 범위와 필요한 컨텍스트
+Workspace: inherit
+```
+
+예시 개념:
+
+```text
+invoke_subagent
+  Role: implementer
+  TypeName: implementer
+  Workspace: inherit
+  Prompt: TASK ID, objective, allowed files, forbidden files, implementation requirements, acceptance criteria 전달
+```
+
+`Workspace: inherit`를 사용해 동일 작업 디렉터리와 브랜치에서 순차적으로 handoff한다.
+
+subagent는 부모 대화 기록을 그대로 상속하지 않으므로 Prompt에 해당 역할이 실제로 필요한 TASK 컨텍스트를 명시적으로 전달한다.
+
+### 6.4 고정 역할 재정의 금지
+
+다음 역할을 `define_subagent`로 다시 만들지 않는다.
+
+```text
 implementer
 verifier
 reviewer
@@ -143,229 +156,103 @@ evaluator
 recorder
 ```
 
-Normal TASK (Mode 3A)에서 implementer, verifier, reviewer, recorder는 각각 별도 subagent로 실행한다.
+이 역할들의 시스템 프롬프트와 도구 권한은 `agent.md`가 유일한 진실 공급원이다.
 
-EVAL TASK (Mode 3B)에서 verifier, evaluator, recorder는 각각 별도 subagent로 실행한다.
+`define_subagent`는 저장소에 영구 manifest가 없는 일회성 보조 역할에만 사용할 수 있다.
 
-다음은 금지한다.
+일회성 역할은 필수 역할을 대체하거나 병합해서는 안 되며, TASK Execution Mode에서 사용할 경우 TASK 범위와 allowed files 정책을 그대로 따라야 한다.
 
-- 서로 다른 역할을 하나의 subagent로 병합
-- 메인 orchestrator가 역할을 대행
-- TASK가 작다는 이유로 subagent 생략
-- spawn 실패 후 단일 에이전트 방식으로 계속 진행
+### 6.5 비동기 실행과 순서 통제
 
-필수 subagent를 spawn할 수 없으면 단일 에이전트로 대체하지 않고 `BLOCKED`로 보고한다.
+Antigravity subagent는 비동기로 실행될 수 있지만 이 하네스의 필수 단계는 순차적으로 완료한다.
 
-## 7. runtime subagent 역할 정의
+```text
+Normal TASK:
+orchestrator → implementer → verifier → reviewer → recorder → commit → user report
 
-### 7.1 orchestrator
+EVAL TASK:
+orchestrator → verifier → evaluator → recorder → commit → user validation guide → STOP
+```
 
-#### 역할
+- implementer 완료 전 verifier를 시작하지 않는다.
+- verifier 완료 전 reviewer를 시작하지 않는다.
+- reviewer 완료 전 recorder를 시작하지 않는다.
+- EVAL TASK에서는 verifier 완료 전 evaluator를 시작하지 않는다.
+- `manage_subagents` 또는 반환 상태로 현재 역할이 완료됐는지 확인한다.
+- 필요하면 `send_message`로 추가 정보만 전달한다.
+- 필수 역할이 error/killed 상태가 되면 원인을 확인하고 FAIL 또는 BLOCKED로 처리한다.
 
-orchestrator는 TASK 전체 흐름을 조율한다.
+### 6.6 subagent handoff 필수 정보
 
-TASK Execution Mode에서만 강한 하네스를 적용한다.
-
-반드시 다음 정보를 TASK에서 추출한다.
+각 역할 Prompt에는 최소한 다음을 포함한다.
 
 - TASK ID
 - WBS ID
 - Domain
 - Branch
+- TASK Type
 - objective
-- source context
+- 역할별 작업 범위
+- source context 중 필요한 부분
 - allowed files
 - forbidden files
-- implementation requirements
 - acceptance criteria
-- verification commands
-- commit rule
+- verification commands 또는 선행 역할 결과 중 필요한 부분
+- "자신의 역할만 수행할 것"
+- "다른 필수 역할을 대행하지 않을 것"
+- "직접 커밋하지 않을 것"
+- "결과를 orchestrator에게 반환할 것"
 
-orchestrator는 다음을 확인한다.
+## 7. 역할별 책임 경계
 
-- 현재 git branch와 TASK Branch 일치 여부
-- 작업 전 `git status --short`
-- 관련 없는 미커밋 변경사항 존재 여부
-- TASK 범위 준수 여부
-- TASK Type에 따른 분기 (Normal TASK vs EVAL TASK)
-- 구현 결과
-- 검증 결과
-- 리뷰 결과
-- 기록 결과
-- 커밋 가능 여부
+### orchestrator
 
-TASK allowed files 내부 변경/삭제/git commit은 사용자 승인 없이 진행한다.
+- TASK 계약 추출
+- branch/git 상태 확인
+- custom agent 가용성 확인
+- subagent 호출, 상태 확인, handoff
+- 실패 시 이전 단계 복귀 또는 중단 판단
+- 최종 diff/status 확인
+- 최종 커밋과 사용자 보고
 
-프로젝트 루트 밖 변경/전체 삭제/원격 파괴만 사용자 승인이 필요하다.
+orchestrator는 구현, 독립 검증, 독립 리뷰, 평가, 실행 로그 작성을 직접 대행하지 않는다.
 
-#### 금지
+### implementer
 
-- TASK 범위 확장
-- TASK에 없는 요구사항 추가
-- 검증 실패 상태에서 완료 처리
-- 리뷰 실패 상태에서 완료 처리
-- 실행 기록 없이 완료 처리
-- 커밋 조건 미충족 상태에서 커밋
+- Normal TASK에서만 사용
+- allowed files 안에서 최소 구현
+- 필요한 테스트 추가/수정
+- 커밋 금지
 
-### 7.2 implementer
+### verifier
 
-#### 역할
+- verification commands 실행
+- acceptance criteria 검증
+- 결과를 PASS / FAIL / BLOCKED로 반환
+- 구현 파일 수정 금지
+- 커밋 금지
 
-implementer는 TASK의 implementation requirements를 구현한다. Normal TASK Flow에서만 사용한다.
+### reviewer
 
-반드시 다음 원칙을 따른다.
+- Normal TASK에서 `git diff`와 검증 결과 검토
+- 범위, forbidden files, 요구사항, 보안, 성능, 아키텍처, 계약, 테스트 누락 확인
+- PASS / PASS_WITH_NOTES / FAIL 반환
+- 파일 수정 및 커밋 금지
 
-- allowed files 안에서만 수정한다.
-- forbidden files는 수정하지 않는다.
-- allowed files 내부 생성/수정/삭제/이동/이름 변경은 사용자 승인 없이 수행한다.
-- 필요한 경우에만 테스트를 추가하거나 수정한다.
-- 변경사항은 최소 단위로 유지한다.
-- 설계 문서, 계약 문서, WBS 문서는 TASK가 허용한 경우에만 수정한다.
-- 구현 후 변경 파일 목록을 보고한다.
+### evaluator
 
-#### 금지
+- EVAL TASK에서만 사용
+- 선행 TASK 로그와 통합 검증 근거 확인
+- 평가표 기반 등급과 PASS / CONDITIONAL_PASS / FAIL / BLOCKED 산출
+- 사용자 검증 시나리오 생성
+- 구현/테스트 수정 및 커밋 금지
 
-- forbidden files 수정
-- allowed files 밖 수정
-- 프로젝트 루트 밖 변경
-- 관련 없는 리팩터링
-- 관련 없는 포맷팅
-- 불필요한 의존성 추가
-- 불필요한 파일 생성
-- 커밋
-- EVAL TASK에서 사용
+### recorder
 
-### 7.3 verifier
-
-#### 역할
-
-verifier는 TASK의 verification commands를 실행하고 acceptance criteria를 확인한다.
-
-Normal TASK에서는 verification commands를 실행한다.
-
-EVAL TASK에서는 선행 TASK 로그와 통합 검증 결과를 확인한다.
-
-반드시 다음을 기록한다.
-
-- 실행한 명령어
-- 실행 결과
-- 성공 여부
-- 실패 시 오류 요약
-- 실패 시 재현 방법
-- 실행하지 못한 명령이 있다면 그 이유
-
-검증 결과는 다음 중 하나로 정리한다.
-
-```text
-PASS
-FAIL
-BLOCKED
-```
-
-#### 금지
-
-- 실행하지 않은 검증을 PASS 처리
-- 실패한 검증을 PASS 처리
-- acceptance criteria 미확인 상태에서 PASS 처리
-- 커밋
-
-### 7.4 reviewer
-
-#### 역할
-
-reviewer는 `git diff`를 기준으로 변경사항을 검토한다. Normal TASK에서는 필수. EVAL TASK에서는 선택 사항.
-
-반드시 다음을 확인한다.
-
-- TASK 범위 준수 여부
-- allowed files 준수 여부
-- forbidden files 수정 여부
-- 관련 없는 변경 포함 여부
-- 요구사항 누락 여부
-- 보안 위험
-- 성능 위험
-- 아키텍처 경계 위반
-- API/data/UI 계약 위반
-- 테스트 또는 검증 누락
-- 유지보수성 문제
-
-리뷰 verdict는 다음 중 하나여야 한다.
-
-```text
-PASS
-PASS_WITH_NOTES
-FAIL
-```
-
-#### 금지
-
-- 검증 실패 상태를 PASS 처리
-- forbidden files 수정 승인
-- 관련 없는 변경 승인
-- 커밋
-
-### 7.5 recorder
-
-#### 역할
-
-recorder는 최종 실행 기록을 작성한다.
-
-기록 파일 경로는 반드시 다음 형식을 따른다.
-
-```text
-ops/logs/TASK-xxx.log.md
-```
-
-기록에는 다음을 포함한다.
-
-- TASK ID
-- WBS ID
-- Domain
-- Branch
-- 작업 요약
-- 수정 파일 목록 (변경 유형 포함: created, modified, deleted, renamed, moved)
-- 구현 내용 요약
-- 검증 명령과 결과
-- acceptance criteria 충족 여부
-- 리뷰 verdict
-- 남은 위험
-- 후속 작업
-- 커밋 메시지
-- 커밋 해시
-
-#### 금지
-
-- 실행하지 않은 검증 기록
-- 실패한 검증을 성공으로 기록
-- 리뷰 실패를 성공으로 기록
-- 커밋하지 않았는데 커밋한 것처럼 기록
-- TASK 범위 밖 문서 수정
-- 커밋
-
-### 7.6 evaluator
-
-#### 역할
-
-evaluator는 EVAL TASK에서 기능 또는 도메인 단위의 구현 품질을 평가한다. Type: eval TASK에서만 사용한다.
-
-반드시 다음을 수행한다.
-
-- 선행 TASK 로그를 읽어 구현, 검증, 리뷰 결과를 확인한다.
-- 평가표 템플릿(ops/templates/feature-evaluation.template.md)에 맞춰 8개 영역을 평가한다.
-- 각 영역에 등급(EXCELLENT/GOOD/ACCEPTABLE/NEEDS_IMPROVEMENT/FAIL)을 부여한다.
-- 최종 verdict(PASS/CONDITIONAL_PASS/FAIL/BLOCKED)를 결정한다.
-- 사용자 검증 안내(ops/templates/user-validation.template.md)를 생성한다.
-
-#### 금지
-
-- 구현 파일 수정
-- 리팩터링
-- 테스트 수정
-- 커밋
-- 삭제/파괴성 작업
-- TASK 범위 확장
-- 평가 증거 조작
-- FAIL 시 자동 재실행
+- `ops/logs/TASK-xxx.log.md` 작성/갱신
+- 실제 실행 증거만 기록
+- 변경 유형(created/modified/deleted/renamed/moved) 기록
+- 커밋 금지
 
 ## 8. 실행 절차
 
@@ -373,126 +260,65 @@ evaluator는 EVAL TASK에서 기능 또는 도메인 단위의 구현 품질을 
 
 1. `AGENTS.md`를 읽는다.
 2. `.agents/rules/**`를 읽는다.
-3. 지정된 `ops/tasks/TASK-xxx.md`를 읽는다.
-4. TASK 계약을 추출한다. (TASK ID, WBS ID, Domain, Branch, Type 포함)
-5. 현재 git branch를 확인한다.
-   ```bash
-   git branch --show-current
-   ```
-6. 현재 branch가 TASK의 Branch와 일치하는지 확인한다. 불일치 시 BLOCKED.
-7. `git status --short`를 실행한다.
-8. 관련 없는 미커밋 변경사항이 있으면 작업을 중단하고 보고한다.
+3. 지정된 TASK 파일을 읽는다.
+4. TASK 계약을 추출한다.
+5. 현재 branch와 TASK Branch 일치 여부를 확인한다. 불일치 시 BLOCKED.
+6. `git status --short`를 확인한다.
+7. 관련 없는 미커밋 변경사항이 있으면 BLOCKED.
+8. TASK Type에 필요한 custom agent manifest를 확인한다.
 
-### 8.2 계획
+### 8.2 Normal TASK (Mode 3A)
 
-1. TASK objective를 확인한다.
-2. source context를 확인한다.
-3. allowed files와 forbidden files를 확인한다.
-4. implementation requirements를 작업 단위로 나눈다.
-5. acceptance criteria를 검증 가능한 체크리스트로 변환한다.
-6. verification commands를 확인한다.
-7. TASK Type에 따라 필요한 runtime subagent 역할을 정한다.
-   - Normal TASK (Mode 3A): implementer, verifier, reviewer, recorder
-   - EVAL TASK (Mode 3B): verifier(통합 검증), evaluator, recorder
-8. 각 역할의 `.agents/agents/<role>/agent.json`을 읽어 시스템 프롬프트와 도구 권한을 확인한다.
-9. `define_subagent`로 각 역할의 런타임 서브에이전트를 등록한다.
+1. implementer를 `TypeName: implementer`, `Workspace: inherit`로 호출한다.
+2. implementer 완료 결과와 변경 파일을 확인한다.
+3. verifier를 `TypeName: verifier`로 호출해 verification commands와 acceptance criteria를 검증한다.
+4. verifier가 FAIL이면 implementer 단계로 되돌린다. BLOCKED면 중단한다.
+5. reviewer를 `TypeName: reviewer`로 호출해 diff와 검증 결과를 리뷰한다.
+6. reviewer가 FAIL이면 implementer 단계로 되돌린다.
+7. recorder를 `TypeName: recorder`로 호출해 실행 기록을 작성한다.
+8. orchestrator가 `git status --short`, `git diff`, `git diff --check`로 최종 무결성을 확인한다.
+9. 완료 조건을 만족하면 커밋한다.
 
-### 8.3 구현 (Normal TASK, Mode 3A)
+### 8.3 EVAL TASK (Mode 3B)
 
-1. implementer 역할로 구현한다.
-2. allowed files 안에서만 수정한다.
-3. 필요한 경우 테스트를 추가하거나 수정한다.
-4. 구현 후 `git diff --stat`을 확인한다.
-5. 구현 후 `git diff`를 확인한다.
+1. Evaluation Scope와 선행 TASK 로그를 확인한다.
+2. verifier를 `TypeName: verifier`로 호출해 통합 검증을 수행한다.
+3. evaluator를 `TypeName: evaluator`로 호출해 평가표 기반 평가와 사용자 검증 안내를 생성한다.
+4. recorder를 `TypeName: recorder`로 호출해 평가 결과와 사용자 검증 안내를 기록한다.
+5. 완료 조건을 만족하면 EVAL TASK를 커밋한다.
+6. TASK Status를 `DONE`, User Validation Status를 `PENDING_USER_VALIDATION`으로 기록한다.
+7. 사용자 검증 안내를 출력하고 STOP한다.
+8. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.
 
-### 8.4 검증
+EVAL TASK에서는 implementer를 사용하지 않고 구현/리팩터링/테스트 수정을 하지 않는다. 필요하면 correction TASK를 새로 만든다.
 
-1. TASK의 verification commands를 실행한다.
-2. acceptance criteria를 하나씩 확인한다.
-3. 실패한 항목이 있으면 구현 단계로 되돌아간다.
-4. 환경 문제로 실행하지 못한 검증은 BLOCKED로 기록하고 이유를 설명한다.
+## 9. 커밋 조건
 
-### 8.5 리뷰 (Normal TASK, Mode 3A)
-
-1. reviewer 역할로 `git diff`를 검토한다.
-2. TASK 범위 준수 여부를 확인한다.
-3. forbidden files 수정 여부를 확인한다.
-4. 검증 결과를 확인한다.
-5. PASS, PASS_WITH_NOTES, FAIL 중 하나의 verdict를 낸다.
-6. FAIL이면 구현 단계로 되돌아간다.
-
-### 8.6 기록
-
-1. recorder 역할로 `ops/logs/TASK-xxx.log.md`를 작성 또는 갱신한다.
-2. 구현, 검증, 리뷰 결과를 기록한다.
-3. 남은 위험과 후속 작업을 기록한다.
-
-### 8.7 EVAL TASK 분기 (EVAL TASK 전용, Mode 3B)
-
-TASK Type이 `eval`인 경우 일반 TASK 흐름(8.3~8.6) 대신 다음 경로를 따른다.
-
-1. EVAL TASK의 Evaluation Scope를 확인한다.
-2. 선행 TASK 로그(`ops/logs/TASK-xxx.log.md`)를 읽는다.
-3. 통합 검증이 필요하면 verifier 역할로 verification commands를 실행한다.
-4. evaluator 역할로 평가표 기반 평가를 수행한다.
-5. evaluator가 사용자 검증 안내를 생성한다.
-6. recorder 역할로 평가 결과와 사용자 검증 안내를 `ops/logs/TASK-xxx.log.md`에 기록한다.
-7. EVAL TASK를 커밋한다. (TASK Status: DONE, User Validation Status: PENDING_USER_VALIDATION)
-8. 사용자 검증 안내를 출력한다.
-9. STOP한다.
-10. 사용자 APPROVED 후 다음 기능 그룹으로 진행한다.
-
-EVAL TASK에서 evaluator가 FAIL 또는 BLOCKED를 반환하면:
-
-1. 평가 결과를 기록한다.
-2. 사용자에게 보고하고 중단한다.
-3. 자동으로 이전 TASK를 재실행하지 않는다.
-4. 필요하면 correction TASK를 새로 만들거나 사용자가 재작업 방향을 승인한 뒤 진행한다.
-
-### 8.8 커밋
-
-검증과 리뷰가 통과한 경우에만 커밋한다.
-
-커밋 조건은 다음과 같다.
+Normal TASK:
 
 - acceptance criteria 충족
-- verification result가 PASS
-- review verdict가 PASS 또는 PASS_WITH_NOTES (Normal TASK)
-- `ops/logs/TASK-xxx.log.md` 작성 또는 갱신
-- 관련 없는 변경사항 없음
+- verifier PASS
+- reviewer PASS 또는 PASS_WITH_NOTES
+- 실행 로그 작성 또는 갱신
 - forbidden files 수정 없음
+- 관련 없는 변경 없음
 
-커밋 메시지는 TASK의 commit rule을 따른다.
+EVAL TASK:
 
-기본 형식은 다음과 같다.
+- Evaluation Scope 확인
+- 선행 TASK 로그 확인
+- 통합 검증 결과 확인
+- evaluator verdict 기록
+- 사용자 검증 안내 기록
+- 관련 없는 변경 없음
+
+기본 커밋 메시지 형식:
 
 ```text
 TASK-XXX WBS-XX-XXX: short summary
 ```
 
-## 9. 완료 조건
-
-TASK는 다음 조건을 모두 만족해야 완료로 본다.
-
-- `AGENTS.md`를 확인했다.
-- `.agents/rules/**`를 확인했다.
-- 지정된 `ops/tasks/TASK-xxx.md`를 기준으로 작업했다.
-- 현재 git branch가 TASK의 Branch와 일치했다.
-- allowed files 안에서만 수정했다.
-- forbidden files를 수정하지 않았다.
-- acceptance criteria를 충족했다.
-- verification commands를 실행했다.
-- 검증 결과가 PASS다.
-- 리뷰 verdict가 PASS 또는 PASS_WITH_NOTES다. (Normal TASK)
-- `ops/logs/TASK-xxx.log.md`를 작성 또는 갱신했다.
-- 관련 없는 변경사항이 없다.
-- 필요한 경우 최종 커밋을 생성했다.
-- 커밋 메시지에 TASK ID가 포함되어 있다.
-- 가능하면 커밋 메시지에 WBS ID가 포함되어 있다.
-
 ## 10. 최종 보고 형식
-
-최종 응답에는 다음을 포함한다.
 
 ```text
 TASK ID:
@@ -512,9 +338,9 @@ Remaining risks:
 Follow-up:
 ```
 
-## 11. 실패 또는 중단 시 보고 형식
+## 11. 실패 또는 중단
 
-작업을 완료할 수 없으면 다음 형식으로 보고한다.
+필수 subagent manifest 누락, TypeName 호출 실패, subagent error/killed, 검증 실패, 리뷰 실패, 범위 위반 등으로 완료할 수 없으면 다음을 보고한다.
 
 ```text
 TASK ID:
@@ -526,3 +352,5 @@ Failed verification:
 Blocking issue:
 Recommended next action:
 ```
+
+필수 역할을 spawn할 수 없을 때 단일 에이전트로 대체하지 않는다.

@@ -6,32 +6,105 @@ trigger: always_on
 
 ## 적용 범위
 
-이 규칙은 **TASK Execution Mode**에서 runtime subagent를 사용할 때 적용한다.
+이 규칙은 Antigravity의 **TASK Execution Mode**에서 runtime subagent를 사용할 때 적용한다.
 
-## 목적
+## 진실 공급원
 
-이 규칙은 Antigravity CLI에서 TASK 실행 중 runtime subagent를 사용할 때의 역할, 책임, 출력 형식을 정의한다.
+Antigravity custom agent의 시스템 프롬프트, 도구 권한, 실행 정책의 진실 공급원은 다음 파일이다.
 
-Antigravity 작업에서 `.agents/agents/*/agent.json` 파일은 런타임 서브에이전트의 시스템 프롬프트와 도구 권한 정의의 진실 공급원이다. (probe 제외)
+```text
+.agents/agents/<role>/agent.md
+```
 
-메인 에이전트(orchestrator)는 `define_subagent` 호출 시 해당 agent.json의 설정을 읽어서 주입한다.
+Antigravity는 workspace의 `.agents/agents/<name>.md` 또는 `.agents/agents/<name>/agent.md`를 자동 탐색한다.
 
-신뢰 가능한 실행 경로는 다음이다.
+이 저장소는 다음 실행 경로를 표준으로 사용한다.
 
 ```text
 .agents/skills/antigravity-execute-task/SKILL.md   ← 실행 절차
-.agents/agents/*/agent.json                        ← 서브에이전트 정의
+.agents/agents/*/agent.md                          ← 네이티브 custom agent 정의
 .agents/rules/**                                   ← 행동 규칙
-runtime subagent orchestration                     ← 실행 엔진
+invoke_subagent                                    ← 고정 역할 실행
 ```
+
+고정 역할에 대해 별도의 JSON manifest를 사용하지 않는다.
 
 ## 기본 원칙
 
 - subagent는 TASK 범위 안에서만 동작한다.
-- subagent는 각자 역할을 명확히 분리한다.
-- subagent 결과는 메인 agent가 최종 검토한다.
-- subagent가 완료했다고 해서 TASK가 완료된 것은 아니다.
-- 최종 완료 판단은 검증, 리뷰, 기록, 커밋 조건을 모두 확인한 뒤 수행한다.
+- 역할별 책임을 분리한다.
+- 고정 역할의 시스템 프롬프트와 도구 권한을 handoff Prompt에서 재정의하지 않는다.
+- subagent 결과는 orchestrator가 최종 검토한다.
+- subagent 완료만으로 TASK 완료로 판단하지 않는다.
+- 검증, 리뷰, 기록, 커밋 조건을 모두 확인한 뒤 완료 판단한다.
+- 필수 역할 호출 실패 시 단일 에이전트 실행으로 우회하지 않는다.
+
+## 고정 역할
+
+| 역할 | mainAgent | subagent | 목적 |
+|---|---:|---:|---|
+| orchestrator | true | false | TASK 전체 조율과 최종 완료 판단 |
+| implementer | false | true | Normal TASK 구현 |
+| verifier | false | true | 검증 및 acceptance criteria 확인 |
+| reviewer | false | true | Normal TASK diff 리뷰 |
+| evaluator | false | true | EVAL TASK 품질 평가 |
+| recorder | false | true | 실행 증거와 로그 기록 |
+
+메인/root thread가 orchestrator 책임을 수행하며 `orchestrator` custom agent를 subagent로 호출하지 않는다.
+
+## native invocation 계약
+
+필수 역할은 `invoke_subagent`로 호출한다.
+
+각 호출은 다음을 만족해야 한다.
+
+```text
+Role: 역할명
+TypeName: 역할의 agent.md name 값
+Workspace: inherit
+Prompt: TASK별 역할 컨텍스트
+```
+
+예:
+
+```text
+Role: verifier
+TypeName: verifier
+Workspace: inherit
+```
+
+`TypeName`은 `.agents/agents/<role>/agent.md`의 `name`과 정확히 일치해야 한다.
+
+필수 manifest가 없거나 `subagent: true`가 아니거나 TypeName 호출에 실패하면 `BLOCKED`로 처리한다.
+
+## define_subagent 제한
+
+다음 고정 역할은 `define_subagent`로 재정의하지 않는다.
+
+```text
+implementer
+verifier
+reviewer
+evaluator
+recorder
+```
+
+`define_subagent`는 영구 manifest가 없는 일회성 보조 역할에만 허용한다.
+
+일회성 역할은 다음을 만족해야 한다.
+
+- 필수 역할을 대체하지 않는다.
+- 여러 필수 역할을 하나로 병합하지 않는다.
+- TASK allowed files와 forbidden files를 그대로 따른다.
+- 필수 단계의 완료 판정을 대신하지 않는다.
+
+## subagent 재귀 제한
+
+implementer, verifier, reviewer, evaluator, recorder는 다른 필수 subagent를 호출하지 않는다.
+
+각 역할의 `agent.md`에는 `invoke_subagent` 권한을 부여하지 않는 것을 기본으로 한다.
+
+모든 필수 handoff는 orchestrator가 직접 수행한다.
 
 ## 실행 흐름
 
@@ -51,26 +124,41 @@ EVAL TASK에서는 implementer를 사용하지 않는다.
 
 EVAL TASK에서는 구현/리팩터링/테스트 수정 금지. 필요하면 correction TASK를 새로 만든다.
 
-## 권장 역할
+## 비동기 실행 제어
 
-TASK 실행 시 필요한 경우 다음 역할을 runtime subagent로 정의한다.
+Antigravity의 subagent는 비동기로 시작될 수 있으나 이 하네스의 필수 역할은 순차 완료한다.
 
-```text
-orchestrator
-implementer
-verifier
-reviewer
-evaluator
-recorder
-```
+- implementer 완료 후 verifier
+- verifier 완료 후 reviewer
+- reviewer 완료 후 recorder
+- EVAL TASK에서는 verifier 완료 후 evaluator, evaluator 완료 후 recorder
 
-작업 규모가 작으면 하나의 agent가 여러 역할을 수행할 수 있다.
+`manage_subagents` 또는 실행 반환 상태로 완료 여부를 확인한다.
 
-그러나 결과 보고에서는 역할별 책임을 분리해서 기록해야 한다.
+필수 역할이 `error` 또는 `killed`가 되면 원인을 확인해 FAIL 또는 BLOCKED로 처리하고 다음 단계로 진행하지 않는다.
+
+## handoff 필수 정보
+
+orchestrator가 subagent에 전달하는 Prompt에는 최소한 다음을 포함한다.
+
+- TASK ID
+- WBS ID
+- Domain
+- Branch
+- TASK Type
+- objective
+- 역할별 작업 범위
+- 필요한 source context
+- allowed files
+- forbidden files
+- acceptance criteria
+- verification commands 또는 선행 역할 결과 중 필요한 부분
+- 자신에게 지정된 역할만 수행한다는 제한
+- 다른 필수 역할을 대행하거나 spawn하지 않는다는 제한
+- 직접 커밋하지 않는다는 제한
+- 결과를 orchestrator에게 반환한다는 요구
 
 ## orchestrator 출력 형식
-
-orchestrator는 다음 형식으로 결과를 낸다.
 
 ```text
 Role: orchestrator
@@ -90,8 +178,6 @@ Next role:
 
 ## implementer 출력 형식
 
-implementer는 다음 형식으로 결과를 낸다.
-
 ```text
 Role: implementer
 TASK ID:
@@ -104,8 +190,6 @@ Risks:
 ```
 
 ## verifier 출력 형식
-
-verifier는 다음 형식으로 결과를 낸다.
 
 ```text
 Role: verifier
@@ -124,8 +208,6 @@ Failure summary:
 
 ## reviewer 출력 형식
 
-reviewer는 다음 형식으로 결과를 낸다.
-
 ```text
 Role: reviewer
 TASK ID:
@@ -141,80 +223,7 @@ Notes:
 Required fixes:
 ```
 
-## recorder 출력 형식
-
-recorder는 다음 형식으로 결과를 낸다.
-
-```text
-Role: recorder
-TASK ID:
-Log path:
-Recorded sections:
-Missing information:
-Status:
-```
-
-## subagent 간 책임 제한
-
-### implementer는 커밋하지 않는다
-
-implementer는 구현만 수행한다.
-
-TASK allowed files 내부 생성/수정/삭제/이동/이름 변경은 사용자 승인 없이 수행한다.
-
-커밋은 메인 agent가 검증, 리뷰, 기록 완료 후 수행한다.
-
-EVAL TASK에서는 implementer를 사용하지 않는다.
-
-프로젝트 루트 밖 변경은 금지한다.
-
-### verifier는 구현하지 않는다
-
-verifier는 검증 실패 원인을 설명할 수 있지만 직접 구현을 수정하지 않는다.
-
-수정이 필요하면 implementer 단계로 되돌린다.
-
-Normal TASK에서는 verification commands를 실행한다.
-
-EVAL TASK에서는 선행 TASK 로그와 통합 검증 결과를 확인한다.
-
-### reviewer는 구현하지 않는다
-
-reviewer는 문제를 지적하고 verdict를 낸다.
-
-직접 구현을 수정하지 않는다.
-
-Normal TASK에서는 필수다.
-
-EVAL TASK에서는 선택 사항이다.
-
-### recorder는 사실만 기록한다
-
-recorder는 실행하지 않은 검증을 기록하지 않는다.
-
-실패한 작업을 성공으로 기록하지 않는다.
-
-파일 변경 유형을 명확히 기록한다: created, modified, deleted, renamed, moved.
-
-### evaluator는 구현하지 않는다
-
-evaluator는 품질 평가만 수행한다. Type: eval TASK에서만 사용한다.
-
-구현 파일을 수정하지 않는다.
-
-리팩터링을 하지 않는다.
-
-테스트를 수정하지 않는다.
-
-커밋하지 않는다.
-
-FAIL 또는 BLOCKED 시 보고하고 중단한다.
-
-자동으로 이전 TASK를 재실행하지 않는다.
-
 ## evaluator 출력 형식
-
-evaluator는 다음 형식으로 결과를 낸다.
 
 ```text
 Role: evaluator
@@ -236,46 +245,58 @@ Improvement Suggestions:
 User Validation Scenarios:
 ```
 
-## 병렬 실행 기준
-
-다음 작업은 병렬 실행할 수 있다.
-
-- 독립적인 파일 조사
-- 독립적인 테스트 분석
-- 문서 확인
-- 코드 리뷰와 위험 분석
-
-다음 작업은 순차 실행한다.
+## recorder 출력 형식
 
 ```text
-Normal TASK (Mode 3A):
-TASK 분석 -> 구현 -> 검증 -> 리뷰 -> 기록 -> 커밋 -> user report
-
-EVAL TASK (Mode 3B):
-TASK 분석 -> 통합 검증 -> 평가 -> 기록 -> 커밋 -> 사용자 검증 안내 -> STOP
+Role: recorder
+TASK ID:
+Log path:
+Recorded sections:
+Missing information:
+Status:
 ```
 
-검증은 구현 이후에 수행한다.
+## 책임 제한
 
-리뷰는 구현 diff와 검증 결과가 나온 뒤 수행한다.
+### implementer
 
-기록은 검증과 리뷰 결과가 나온 뒤 수행한다.
+- 구현만 수행한다.
+- TASK allowed files 내부 변경만 수행한다.
+- 커밋하지 않는다.
+- EVAL TASK에서는 사용하지 않는다.
 
-커밋은 모든 조건 충족 후 수행한다.
+### verifier
 
-## 브랜치별 병렬 실행
+- 검증 실패 원인을 설명할 수 있지만 구현 파일을 수정하지 않는다.
+- Normal TASK에서는 verification commands와 acceptance criteria를 검증한다.
+- EVAL TASK에서는 통합 검증과 선행 TASK 증거를 확인한다.
+- 커밋하지 않는다.
 
-프로젝트 전체에서는 여러 도메인 브랜치가 각자 다른 TASK를 병렬로 실행할 수 있다.
+### reviewer
 
-단일 에이전트 세션은 한 번에 하나의 TASK만 실행한다.
+- 문제를 지적하고 verdict를 낸다.
+- 직접 구현을 수정하지 않는다.
+- Normal TASK에서는 필수다.
+- EVAL TASK에서는 선택 사항이다.
+- 커밋하지 않는다.
 
-단일 브랜치는 한 번에 하나의 Active TASK만 가진다.
+### evaluator
+
+- Type: eval TASK에서만 품질 평가를 수행한다.
+- 구현/리팩터링/테스트 수정 금지.
+- 평가 증거를 조작하지 않는다.
+- 커밋하지 않는다.
+
+### recorder
+
+- 실제 실행된 사실만 기록한다.
+- 실패한 작업을 성공으로 기록하지 않는다.
+- 파일 변경 유형을 명확히 기록한다.
+- 커밋하지 않는다.
 
 ## 최종 완료 판단
 
 ### 일반 TASK 완료 조건
-
-runtime subagent 결과가 모두 나와도 다음 조건을 만족하지 않으면 완료가 아니다.
 
 - implementation 완료
 - verification PASS
@@ -287,28 +308,25 @@ runtime subagent 결과가 모두 나와도 다음 조건을 만족하지 않으
 
 ### EVAL TASK 완료 조건
 
-EVAL TASK는 일반 TASK와 다른 완료 조건을 따른다.
-
 - Evaluation Scope 확인 완료
 - 선행 TASK 로그 확인 완료
-- 통합 검증 결과 확인 완료 (orchestrator 또는 verifier가 수행)
-- evaluator verdict 산출 완료 (PASS / CONDITIONAL_PASS / FAIL / BLOCKED)
-- 평가 결과 `ops/logs/TASK-xxx.log.md`에 기록 완료
-- 사용자 검증 안내 기록 완료
+- 통합 검증 결과 확인 완료
+- evaluator verdict 산출 완료
+- 평가 결과와 사용자 검증 안내 기록 완료
 - EVAL TASK 커밋 완료
-- TASK Status를 `DONE`으로 설정
-- User Validation Status를 `PENDING_USER_VALIDATION`으로 설정
+- TASK Status `DONE`
+- User Validation Status `PENDING_USER_VALIDATION`
 - 사용자 검증 안내 출력 완료
-- 다음 기능 그룹 진행 중단 (STOP)
+- 다음 기능 그룹 진행 중단(STOP)
 
 EVAL TASK는 사용자가 APPROVED를 명시하기 전까지 다음 feature group 또는 WBS group으로 진행하지 않는다.
 
 ## 실패 시 처리
 
-subagent 중 하나가 FAIL 또는 BLOCKED를 반환하면 다음을 수행한다.
+subagent 중 하나가 FAIL 또는 BLOCKED를 반환하거나 호출 자체가 실패하면:
 
 1. 실패 역할을 식별한다.
 2. 실패 이유를 요약한다.
-3. 수정 가능한 경우 해당 단계로 되돌아간다.
-4. 수정 불가능한 경우 TASK를 FAIL 또는 BLOCKED로 보고한다.
+3. 수정 가능한 Normal TASK 실패는 implementer 단계로 되돌아갈 수 있다.
+4. 수정 불가능하거나 manifest/호출 문제면 BLOCKED로 중단한다.
 5. 실패 내용을 `ops/logs/TASK-xxx.log.md`에 기록한다.
