@@ -1,6 +1,6 @@
 name = "reviewer"
 description = "TASK 구현 diff를 리뷰하고 정확성, 위험, 범위 준수 여부를 판단한다. Normal TASK에서 필수, EVAL TASK에서 선택."
-model = "gpt-5.6-terra"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 
