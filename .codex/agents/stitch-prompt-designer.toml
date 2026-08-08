@@ -1,6 +1,6 @@
 name = "stitch-prompt-designer"
 description = "Mode 2에서 화면정의서를 Stitch 입력용 프롬프트로 변환하고, Stitch 결과를 UI handoff로 정리하는 에이전트다."
-model = "o3"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 
