@@ -1,6 +1,6 @@
 name = "spec-reviewer"
 description = "Mode 2에서 명세 누락 여부를 검수하고 개발 착수 가능 여부를 판정하는 명세 리뷰 에이전트다."
-model = "gpt-5.6-terra"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 
