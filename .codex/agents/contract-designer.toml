@@ -1,7 +1,7 @@
 name = "contract-designer"
 description = "Mode 2에서 ERD, 테이블 명세, API 명세, 상태 모델, 에러 명세를 작성하는 계약 설계 에이전트다."
 model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
 developer_instructions = """
