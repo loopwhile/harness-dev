@@ -1,6 +1,6 @@
 name = "orchestrator"
 description = "TASK Execution Mode에서 하나의 TASK 파일을 기준으로 implementer, verifier, reviewer, recorder를 조율하고 최종 커밋을 생성한다."
-model = "gpt-5.5"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
