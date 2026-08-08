@@ -1,6 +1,6 @@
 name = "product-planner"
 description = "Mode 2에서 서비스 목적, 타깃 사용자, 상용 v1 범위, 수익모델, 운영 정책을 정의하는 제품 기획 에이전트다."
-model = "o3"
+model = "gpt-5.6-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 
