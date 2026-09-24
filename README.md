@@ -107,7 +107,7 @@ flowchart TD
     APPROVE -- "APPROVED" --> NEXT
     APPROVE -- "REQUEST_CHANGES / REJECTED" --> CHANGE
     CHANGE --> START
-    APPROVE -- "DEFERRED" --> ECOM
+    APPROVE -- "DEFERRED" --> HOLD["보류 · 후속 결정 대기"]
 ```
 
 일반 TASK의 고정 순서는 **orchestrator → implementer → verifier → reviewer → recorder → commit**이다. EVAL TASK는 구현을 하지 않고 **orchestrator → verifier → evaluator → recorder → commit → 사용자 검증 안내 → STOP** 순서로 수행한다. 사용자 `APPROVED` 전에는 다음 기능 그룹으로 넘어가지 않는다. 실패·차단된 TASK는 커밋하지 않는다.
